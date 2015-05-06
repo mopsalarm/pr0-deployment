@@ -1,0 +1,8 @@
+
+- hosts: hosts
+  vars:
+    gif2webm_port: 5000
+
+  roles:
+    - common
+    - gif2webm

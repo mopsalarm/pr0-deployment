@@ -1,0 +1,8 @@
+
+- hosts: hosts
+  vars:
+    thumby_port: 5001
+
+  roles:
+    - common
+    - thumby

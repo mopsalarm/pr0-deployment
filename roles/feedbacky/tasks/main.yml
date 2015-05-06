@@ -1,0 +1,24 @@
+
+- name: clone git repository
+  git: repo=https://github.com/mopsalarm/feedbacky.git dest=/tmp/feedbacky update=yes
+
+- name: build docker image
+  command: docker build -t feedbacky /tmp/feedbacky
+
+- name: remove previous container
+  docker: name=feedbacky image=feedbacky state=absent
+
+- name: start new docker container
+  docker:
+    name: feedbacky
+    image: feedbacky
+    state: started
+
+    ports:
+      - "0.0.0.0:{{ feedbacky_port }}:5000"
+
+    env:
+      RECEIVER: "{{ receiver_address }}"
+      HOST: "{{ smtp_host }}"
+      USER: "{{ smtp_user }}"
+      PASSWORD: "{{ smtp_password }}"

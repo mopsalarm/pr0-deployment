@@ -1,0 +1,21 @@
+
+- name: clone git repository
+  git: repo=https://github.com/mopsalarm/gif2webm.git dest=/tmp/gif2webm update=yes
+
+- name: build docker image
+  command: docker build -t gif2webm /tmp/gif2webm
+
+- name: remove previous container
+  docker: name=gif2webm image=gif2webm state=absent
+
+- name: start new docker container
+  docker:
+    name: gif2webm
+    image: gif2webm
+    state: started
+
+    ports:
+      - "0.0.0.0:{{ gif2webm_port }}:5000"
+
+    volumes:
+      - "/data/webm:/usr/src/app/webm"
