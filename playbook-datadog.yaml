@@ -1,0 +1,22 @@
+- hosts: hosts
+  vars:
+    datadog_api_key: "b9aa60502189ab1fa7efb08bf152c59e"
+    datadog_hostname: "{{ ansible_hostname }}"
+
+  roles:
+    - common
+
+  tasks:
+    - name: start datadog container
+      docker:
+        name: dd-agent
+        image: datadog/docker-dd-agent
+        state: started
+        hostname: "{{ datadog_hostname }}"
+        privileged: yes
+        volumes:
+          - "/var/run/docker.sock:/var/run/docker.sock"
+          - "/proc/mounts:/host/proc/mounts:ro"
+          - "/sys/fs/cgroup/:/host/sys/fs/cgroup:ro"
+        env:
+          API_KEY: "{{ datadog_api_key }}"
