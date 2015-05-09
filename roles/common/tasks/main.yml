@@ -1,8 +1,8 @@
 - name: add hushlogin
   file: path=/root/.hushlogin state=touch
 
-- name: update apt cache
-  apt: update_cache=yes cache_valid_time=3600
+# - name: update apt cache
+#   apt: update_cache=yes cache_valid_time=3600
 
 - name: install htop
   apt: name=htop state=present
