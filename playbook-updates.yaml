@@ -1,0 +1,23 @@
+- hosts: hosts
+  vars:
+    nginx_port: 80
+    nginx_root: "/var/www"
+
+  roles:
+    - common
+
+  tasks:
+    - name: install nginx docker
+      docker:
+        name: nginx
+        image: kyma/docker-nginx
+        state: started
+
+        command: nginx
+
+        ports:
+          - "0.0.0.0:{{ nginx_port }}:80"
+
+        volumes:
+          - "{{ nginx_root }}:/var/www:ro"
+
