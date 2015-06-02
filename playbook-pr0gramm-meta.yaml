@@ -1,0 +1,8 @@
+
+- hosts: hosts
+  vars:
+    pr0gramm_meta_port: 5003
+
+  roles:
+    - common
+    - pr0gramm-meta
