@@ -2,7 +2,41 @@
 - hosts: hosts
   vars:
     pr0gramm_meta_port: 5003
+    pr0gramm_meta_db_file: "/data/pr0gramm-meta.sqlite3"
+    datadog_api_key: "your api key here"
+    datadog_app_key: "your app key here"
 
   roles:
     - common
-    - pr0gramm-meta
+
+  tasks:
+    - name: clone git repository
+      git: repo=https://github.com/mopsalarm/pr0gramm-meta.git dest=/tmp/pr0gramm-meta update=yes
+
+    - name: build docker image for webapp
+      command: docker build -t pr0gramm/meta-webapp /tmp/pr0gramm-meta/webapp
+
+    - name: remove previous container for webapp
+      docker: name=pr0gramm-meta-webapp image=pr0gramm/meta-webapp state=absent
+
+    - name: build docker image for update service
+      command: docker build -t pr0gramm/meta-update /tmp/pr0gramm-meta/update
+
+    - name: remove previous container for update service
+      docker: name=pr0gramm-meta-update image=pr0gramm/meta-update state=absent
+
+    - name: start new docker container for webapp
+      docker:
+        name: pr0gramm-meta-webapp
+        image: pr0gramm/meta-webapp
+        state: started
+
+        env:
+          DATADOG_APP_KEY: "{{ datadog_api_key }}"
+          DATADOG_API_KEY: "{{ datadog_app_key }}"
+
+        ports:
+          - "0.0.0.0:{{ pr0gramm_meta_port }}:8080"
+
+        volumes:
+          - "{{ pr0gramm_meta_db_file }}:/usr/src/app/pr0gramm-meta.sqlite3:ro"
