@@ -36,8 +36,8 @@
         state: started
 
         env:
-          DATADOG_APP_KEY: "{{ datadog_api_key }}"
-          DATADOG_API_KEY: "{{ datadog_app_key }}"
+          DATADOG_API_KEY: "{{ datadog_api_key }}"
+          DATADOG_APP_KEY: "{{ datadog_app_key }}"
 
         ports:
           - "0.0.0.0:{{ pr0gramm_meta_port }}:8080"
@@ -54,8 +54,8 @@
         state: started
 
         env:
-          DATADOG_APP_KEY: "{{ datadog_api_key }}"
-          DATADOG_API_KEY: "{{ datadog_app_key }}"
+          DATADOG_API_KEY: "{{ datadog_api_key }}"
+          DATADOG_APP_KEY: "{{ datadog_app_key }}"
 
         volumes:
           - "{{ pr0gramm_meta_db_file }}:/usr/src/app/pr0gramm-meta.sqlite3"
