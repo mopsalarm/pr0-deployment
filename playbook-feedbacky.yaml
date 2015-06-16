@@ -3,10 +3,10 @@
   vars:
     feedbacky_port: 5002
 
-    receiver_address: your_mail@example.com
-    smtp_host: smtp.gmail.com
-    smtp_user: "{{ receiver_address }}"
-    smtp_password: your_password_here
+    feedbacky_receiver_address: your_mail@example.com
+    feedbacky_smtp_host: smtp.gmail.com
+    feedbacky_smtp_user: "{{ receiver_address }}"
+    feedbacky_smtp_password: your_password_here
 
   tasks:
     - name: clone git repository
