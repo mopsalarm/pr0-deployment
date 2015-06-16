@@ -28,7 +28,7 @@
           - "0.0.0.0:{{ feedbacky_port }}:5000"
 
         env:
-          RECEIVER: "{{ receiver_address }}"
-          HOST: "{{ smtp_host }}"
-          USER: "{{ smtp_user }}"
-          PASSWORD: "{{ smtp_password }}"
+          RECEIVER: "{{ feedbacky_receiver_address }}"
+          HOST: "{{ feedbacky_smtp_host }}"
+          USER: "{{ feedbacky_smtp_user }}"
+          PASSWORD: "{{ feedbacky_smtp_password }}"
