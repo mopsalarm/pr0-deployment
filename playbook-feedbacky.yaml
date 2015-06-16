@@ -10,18 +10,24 @@
 
   tasks:
     - name: clone git repository
-      git: repo=https://github.com/mopsalarm/feedbacky.git dest=/tmp/feedbacky update=yes
+      git:
+        repo: https://github.com/mopsalarm/feedbacky.git
+        dest: /tmp/feedbacky
+        update: yes
 
     - name: build docker image
-      command: docker build -t feedbacky /tmp/feedbacky
+      command: docker build -t pr0gramm/feedbacky /tmp/feedbacky
 
     - name: remove previous container
-      docker: name=feedbacky image=feedbacky state=absent
+      docker:
+        name: pr0gramm-feedbacky
+        image: pr0gramm/feedbacky
+        state: absent
 
     - name: start new docker container
       docker:
-        name: feedbacky
-        image: feedbacky
+        name: pr0gramm-feedbacky
+        image: pr0gramm/feedbacky
         state: started
 
         ports:
