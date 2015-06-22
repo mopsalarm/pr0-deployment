@@ -2,7 +2,32 @@
 - hosts: hosts
   vars:
     gif2webm_port: 5000
+    datadog_api_key: "your api key here"
+    datadog_app_key: "your app key here"
 
-  roles:
-    - common
-    - gif2webm
+  tasks:
+  - name: clone git repository
+    git: repo=https://github.com/mopsalarm/gif2webm.git dest=/tmp/gif2webm update=yes
+
+  - name: build docker image
+    command: docker build -t pr0gramm/gif2webm /tmp/gif2webm
+
+  - name: remove previous container
+    docker: name=pr0gramm-gif2webm image=pr0gramm/gif2webm state=absent
+
+  - name: start new docker container
+    docker:
+      name: pr0gramm-gif2webm
+      image: pr0gramm/gif2webm
+      state: started
+
+      env:
+        DATADOG_API_KEY: "{{ datadog_api_key }}"
+        DATADOG_APP_KEY: "{{ datadog_app_key }}"
+
+      ports:
+        - "0.0.0.0:{{ gif2webm_port }}:5000"
+
+      volumes:
+        - "/data/webm:/usr/src/app/webm"
+
