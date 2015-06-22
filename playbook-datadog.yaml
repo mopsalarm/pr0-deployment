@@ -1,9 +1,8 @@
 - hosts: hosts
   vars:
-    datadog_api_key: "b9aa60502189ab1fa7efb08bf152c59e"
+    datadog_api_key: "you api key here"
     datadog_hostname: "{{ ansible_hostname }}"
 
   roles:
-    - common
     - datadog
     
