@@ -1,0 +1,35 @@
+- hosts: hosts
+
+  tasks:
+    - name: assures nginx config directory exists
+      file: path=/data/nginx/conf.d state=directory
+
+    - name: assures nginx data directory exists
+      file: path=/data/nginx/data state=directory
+
+    - name: copy nginx config file
+      copy:
+        src: files/nginx.conf
+        dest: /data/nginx/conf.d/nginx.conf
+
+    - name: remove previous container
+      docker: name=nginx image=nginx state=absent
+
+    - name: start nginx container
+      docker:
+        name: nginx
+        image: nginx
+        state: started
+
+        expose:
+          - 5000
+          - 5001
+
+        ports:
+          - "0.0.0.0:80:80"
+          - "0.0.0.0:5000:5000"
+          - "0.0.0.0:5001:5001"
+
+        volumes:
+          - "/data/nginx/data/:/data/nginx/"
+          - "/data/nginx/conf.d/:/etc/nginx/conf.d/:ro"
