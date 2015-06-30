@@ -12,6 +12,10 @@
     dest: /etc/dd-agent/conf.d/docker.yaml
 
 - copy:
+    src: nginx.yaml
+    dest: /etc/dd-agent/conf.d/nginx.yaml
+
+- copy:
     src: supervisor.conf
     dest: /etc/dd-agent/supervisor.conf
 
