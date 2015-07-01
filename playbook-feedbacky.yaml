@@ -1,7 +1,7 @@
 
 - hosts: hosts
   vars:
-    feedbacky_port: 5002
+    feedbacky_port: 15002
 
     feedbacky_receiver_address: your_mail@example.com
     feedbacky_smtp_host: smtp.gmail.com
