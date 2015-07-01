@@ -1,7 +1,7 @@
 
 - hosts: hosts
   vars:
-    pr0gramm_meta_port: 5003
+    pr0gramm_meta_port: 15003
     pr0gramm_meta_db_file: "/data/pr0gramm-meta.sqlite3"
     datadog_api_key: "your api key here"
     datadog_app_key: "your app key here"
