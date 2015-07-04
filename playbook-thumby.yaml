@@ -27,6 +27,3 @@
 
         ports:
           - "0.0.0.0:{{ thumby_port }}:5000"
-
-        volumes:
-          - "/data/thumby:/usr/src/app/images"
