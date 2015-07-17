@@ -31,3 +31,4 @@
         volumes:
           - "/data/nginx/data/:/data/nginx/"
           - "/data/nginx/conf.d/:/etc/nginx/conf.d/:ro"
+          - "/data/nginx/logs/:/var/log/nginx/"

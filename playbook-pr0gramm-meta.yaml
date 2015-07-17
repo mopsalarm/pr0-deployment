@@ -3,6 +3,7 @@
   vars:
     pr0gramm_meta_port: 15003
     pr0gramm_meta_db_file: "/data/pr0gramm-meta.sqlite3"
+    pr0gramm_meta_broke_file: "/data/pr0gramm.broke"
     datadog_api_key: "your api key here"
     datadog_app_key: "your app key here"
 
@@ -59,5 +60,6 @@
 
         volumes:
           - "{{ pr0gramm_meta_db_file }}:/usr/src/app/pr0gramm-meta.sqlite3"
+          - "{{ pr0gramm_meta_broke_file }}:/usr/src/app/pr0gramm.broke"
 
       when: not skip_update_service
