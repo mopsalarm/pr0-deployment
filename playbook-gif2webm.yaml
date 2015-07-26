@@ -29,5 +29,4 @@
         - "0.0.0.0:{{ gif2webm_port }}:5000"
 
       volumes:
-        - "/data/webm:/usr/src/app/webm"
-
+        - "/data/webm:/app/webm"

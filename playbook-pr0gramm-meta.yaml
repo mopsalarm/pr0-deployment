@@ -2,8 +2,7 @@
 - hosts: hosts
   vars:
     pr0gramm_meta_port: 15003
-    pr0gramm_meta_db_file: "/data/pr0gramm-meta.sqlite3"
-    pr0gramm_meta_broke_file: "/data/pr0gramm.broke"
+    pr0gramm_meta_data_dir: "/data"
     datadog_api_key: "your api key here"
     datadog_app_key: "your app key here"
 
@@ -44,7 +43,7 @@
           - "0.0.0.0:{{ pr0gramm_meta_port }}:8080"
 
         volumes:
-          - "{{ pr0gramm_meta_db_file }}:/usr/src/app/pr0gramm-meta.sqlite3:ro"
+          - "{{ pr0gramm_meta_data_dir }}/:/data/:roff"
 
       when: not skip_webapp
 
@@ -59,7 +58,6 @@
           DATADOG_APP_KEY: "{{ datadog_app_key }}"
 
         volumes:
-          - "{{ pr0gramm_meta_db_file }}:/usr/src/app/pr0gramm-meta.sqlite3"
-          - "{{ pr0gramm_meta_broke_file }}:/usr/src/app/pr0gramm.broke"
+          - "{{ pr0gramm_meta_data_dir }}/:/data/"
 
       when: not skip_update_service
