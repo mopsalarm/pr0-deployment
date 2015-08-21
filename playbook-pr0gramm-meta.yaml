@@ -43,7 +43,7 @@
           - "0.0.0.0:{{ pr0gramm_meta_port }}:8080"
 
         volumes:
-          - "{{ pr0gramm_meta_data_dir }}/:/data/:roff"
+          - "{{ pr0gramm_meta_data_dir }}/:/data/:ro"
 
       when: not skip_webapp
 
