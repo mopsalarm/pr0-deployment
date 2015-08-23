@@ -5,7 +5,11 @@
       file: path=/data/nginx/conf.d state=directory
 
     - name: assures nginx data directory exists
-      file: path=/data/nginx/data state=directory
+      file: path={{ item }} state=directory
+      with_items:
+        - /data/nginx/data
+        - /data/nginx/cache
+        - /data/nginx/static
 
     - name: copy nginx config file
       copy:
@@ -26,6 +30,6 @@
           - "0.0.0.0:80:80"
 
         volumes:
-          - "/data/nginx/data/:/data/nginx/"
+          - "/data/nginx/:/data/nginx/"
           - "/data/nginx/conf.d/:/etc/nginx/conf.d/:ro"
           - "/data/nginx/logs/:/var/log/nginx/"
