@@ -9,26 +9,12 @@
     feedbacky_smtp_password: your_password_here
 
   tasks:
-    - name: clone git repository
-      git:
-        repo: https://github.com/mopsalarm/feedbacky.git
-        dest: /tmp/feedbacky
-        update: yes
-
-    - name: build docker image
-      command: docker build -t pr0gramm/feedbacky /tmp/feedbacky
-
-    - name: remove previous container
-      docker:
-        name: pr0gramm-feedbacky
-        image: pr0gramm/feedbacky
-        state: absent
-
     - name: start new docker container
       docker:
         name: pr0gramm-feedbacky
-        image: pr0gramm/feedbacky
-        state: started
+        image: mopsalarm/pr0gramm-feedback
+        state: reloaded
+        pull: always
 
         ports:
           - "0.0.0.0:{{ feedbacky_port }}:5000"
