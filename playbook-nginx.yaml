@@ -12,21 +12,15 @@
         src: files/nginx.conf
         dest: /data/nginx/conf.d/nginx.conf
 
-    - name: remove previous container
-      docker: name=nginx image=nginx state=absent
-
     - name: start nginx container
       docker:
         name: nginx
         image: nginx
-        state: started
+        state: reloaded
+        pull: always
 
         ports:
           - "0.0.0.0:80:80"
-          - "0.0.0.0:5000:80"
-          - "0.0.0.0:5001:80"
-          - "0.0.0.0:5002:80"
-          - "0.0.0.0:5003:80"
 
         volumes:
           - "/data/nginx/data/:/data/nginx/"

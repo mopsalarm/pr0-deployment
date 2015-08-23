@@ -11,6 +11,7 @@
         name: pr0gramm-categories
         image: mopsalarm/pr0gramm-categories
         state: reloaded
+        pull: always
 
         env:
           DATADOG_API_KEY: "{{ datadog_api_key }}"
