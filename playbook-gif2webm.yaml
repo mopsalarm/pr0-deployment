@@ -6,20 +6,12 @@
     datadog_app_key: "your app key here"
 
   tasks:
-  - name: clone git repository
-    git: repo=https://github.com/mopsalarm/gif2webm.git dest=/tmp/gif2webm update=yes
-
-  - name: build docker image
-    command: docker build -t pr0gramm/gif2webm /tmp/gif2webm
-
-  - name: remove previous container
-    docker: name=pr0gramm-gif2webm image=pr0gramm/gif2webm state=absent
-
   - name: start new docker container
     docker:
       name: pr0gramm-gif2webm
-      image: pr0gramm/gif2webm
-      state: started
+      image: mopsalarm/gif2webm
+      state: reloaded
+      pull: always
 
       env:
         DATADOG_API_KEY: "{{ datadog_api_key }}"
