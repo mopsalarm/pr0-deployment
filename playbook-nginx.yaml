@@ -12,11 +12,14 @@
         src: files/nginx.conf
         dest: /data/nginx/conf.d/nginx.conf
 
+    - name: remove previous container
+      docker: name=nginx image=nginx state=absent
+
     - name: start nginx container
       docker:
         name: nginx
         image: nginx
-        state: reloaded
+        state: started
         pull: always
 
         ports:
