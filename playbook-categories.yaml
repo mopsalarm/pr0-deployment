@@ -21,4 +21,4 @@
           - "0.0.0.0:{{ http_port }}:8080"
 
         volumes:
-          - "/data/pr0gramm-meta.sqlite3:/data/pr0gramm-meta.sqlite3:ro"
+          - "/data/pr0gramm-meta.sqlite3:/data/pr0gramm-meta.sqlite3"

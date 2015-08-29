@@ -10,30 +10,12 @@
     skip_update_service: false
 
   tasks:
-    - name: clone git repository
-      git: repo=https://github.com/mopsalarm/pr0gramm-meta.git dest=/tmp/pr0gramm-meta update=yes
-
-    - name: build docker image for webapp
-      command: docker build -t pr0gramm/meta-webapp /tmp/pr0gramm-meta/webapp
-      when: not skip_webapp
-
-    - name: remove previous container for webapp
-      docker: name=pr0gramm-meta-webapp image=pr0gramm/meta-webapp state=absent
-      when: not skip_webapp
-
-    - name: build docker image for update service
-      command: docker build -t pr0gramm/meta-update /tmp/pr0gramm-meta/update
-      when: not skip_update_service
-
-    - name: remove previous container for update service
-      docker: name=pr0gramm-meta-update image=pr0gramm/meta-update state=absent
-      when: not skip_update_service
-
     - name: start new docker container for webapp
       docker:
         name: pr0gramm-meta-webapp
-        image: pr0gramm/meta-webapp
-        state: started
+        image: mopsalarm/pr0gramm-meta-webapp
+        state: reloaded
+        pull: always
 
         env:
           DATADOG_API_KEY: "{{ datadog_api_key }}"
@@ -50,8 +32,9 @@
     - name: start new docker container for update service
       docker:
         name: pr0gramm-meta-update
-        image: pr0gramm/meta-update
-        state: started
+        image: mopsalarm/pr0gramm-meta-update
+        state: reloaded
+        pull: always
 
         env:
           DATADOG_API_KEY: "{{ datadog_api_key }}"
