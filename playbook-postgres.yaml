@@ -1,0 +1,20 @@
+- hosts: hosts
+
+  tasks:
+    - name: assures postgres data directory exists
+      file: path=/data/postgres/ state=directory
+
+    - name: start postgres container
+      docker:
+        name: postgres
+        image: postgres:9.5
+        state: reloaded
+        pull: always
+
+        env:
+          PGDATA: /var/lib/postgresql/data/pg
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: password
+
+        volumes:
+          - "/data/postgres:/var/lib/postgresql/data"

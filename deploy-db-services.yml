@@ -1,0 +1,4 @@
+# deploys the services that require the database
+- include: playbook-postgres.yaml
+- include: playbook-pr0gramm-meta.yaml
+- include: playbook-categories.yaml

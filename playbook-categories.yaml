@@ -16,6 +16,10 @@
         env:
           DATADOG_API_KEY: "{{ datadog_api_key }}"
           DATADOG_APP_KEY: "{{ datadog_app_key }}"
+          POSTGRES_HOST: "postgres"
+
+        links:
+          - "postgres:postgres"
 
         ports:
           - "0.0.0.0:{{ http_port }}:8080"
