@@ -7,9 +7,8 @@
     - name: start postgres container
       docker:
         name: postgres
-        image: postgres:9.5
+        image: postgres:9.5-beta1
         state: reloaded
-        pull: always
 
         env:
           PGDATA: /var/lib/postgresql/data/pg
