@@ -3,3 +3,4 @@
 - include: playbook-gif2webm.yaml
 - include: playbook-feedbacky.yaml
 - include: playbook-thumby.yaml
+- include: playbook-logrotate.yaml
