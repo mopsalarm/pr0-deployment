@@ -4,9 +4,9 @@
     feedbacky_port: 15002
 
     feedbacky_receiver_address: your_mail@example.com
-    feedbacky_smtp_host: smtp.gmail.com
-    feedbacky_smtp_user: "{{ receiver_address }}"
-    feedbacky_smtp_password: your_password_here
+    feedbacky_smtp_host: "your smtp server"
+    feedbacky_smtp_user: "your mail user"
+    feedbacky_smtp_password: "your mail password"
 
   tasks:
     - name: start new docker container
