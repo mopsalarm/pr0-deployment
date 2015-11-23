@@ -28,11 +28,10 @@
 
         ports:
           - "0.0.0.0:80:80"
+          - "0.0.0.0:443:443"
 
         volumes:
           - "/data/nginx/:/data/nginx/"
           - "/data/nginx/conf.d/:/etc/nginx/conf.d/:ro"
           - "/data/nginx/logs/:/var/log/nginx/"
-
-- include: playbook-categories.yaml
-- include: playbook-pr0gramm-meta.yaml
+          - "/etc/letsencrypt/:/ssl/:ro"
