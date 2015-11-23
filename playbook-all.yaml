@@ -1,6 +1,0 @@
-- include: playbook-nginx.yaml
-- include: deploy-db-services.yaml
-- include: playbook-gif2webm.yaml
-- include: playbook-feedbacky.yaml
-- include: playbook-thumby.yaml
-- include: playbook-logrotate.yaml

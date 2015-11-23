@@ -16,14 +16,29 @@
         src: files/nginx.conf
         dest: /data/nginx/conf.d/nginx.conf
 
-    - name: remove previous container
-      docker: name=nginx image=nginx state=absent
+    - name: generate (or renew ssl certificates)
+      tags: cronjob
+      cron:
+        name: refresh_ssl_certificates
+        special_time: weekly
+        job: >
+          sh -c '
+          docker rm -f letsencrypt ;
+          docker run --rm -p 172.17.42.1:444:443 -p 172.17.42.1:81:80
+          --name letsencrypt
+          -v "/etc/letsencrypt:/etc/letsencrypt"
+          -v "/var/lib/letsencrypt:/var/lib/letsencrypt"
+          quay.io/letsencrypt/letsencrypt:latest
+          auth -d pr0.wibbly-wobbly.de
+          -m mopsalarm.pr0gramm@gmx.de
+          --renew-by-default --agree-dev-preview --agree-tos
+          '
 
     - name: start nginx container
       docker:
         name: nginx
         image: nginx
-        state: started
+        state: restarted
         pull: always
 
         ports:

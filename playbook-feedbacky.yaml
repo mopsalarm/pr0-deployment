@@ -13,11 +13,11 @@
       docker:
         name: pr0gramm-feedbacky
         image: mopsalarm/pr0gramm-feedback
-        state: reloaded
+        state: restarted
         pull: always
 
         ports:
-          - "0.0.0.0:{{ feedbacky_port }}:5000"
+          - "{{ ansible_docker0.ipv4.address }}:{{ feedbacky_port }}:5000"
 
         env:
           RECEIVER: "{{ feedbacky_receiver_address }}"

@@ -8,7 +8,7 @@
       docker:
         name: logrotate
         image: eranchetz/logrotate
-        state: reloaded
+        state: restarted
         pull: always
 
         volumes:

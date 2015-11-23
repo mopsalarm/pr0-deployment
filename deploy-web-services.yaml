@@ -1,6 +1,8 @@
 # deploys the services that require the database
 - include: playbook-nginx.yaml
-- include: playbook-pr0gramm-meta.yaml
+- include: playbook-meta-webapp.yaml
 - include: playbook-categories.yaml
 - include: playbook-comments.yaml
+- include: playbook-thumby.yaml
+- include: playbook-gif2webm.yaml
 - include: playbook-feedbacky.yaml

@@ -10,16 +10,13 @@
       docker:
         name: pr0gramm-categories
         image: mopsalarm/pr0gramm-categories
-        state: reloaded
+        state: restarted
         pull: always
 
         env:
           DATADOG_API_KEY: "{{ datadog_api_key }}"
           DATADOG_APP_KEY: "{{ datadog_app_key }}"
-          POSTGRES_HOST: "postgres"
-
-        links:
-          - "postgres:postgres"
+          POSTGRES_HOST: "{{ ansible_docker0.ipv4.address }}"
 
         ports:
-          - "0.0.0.0:{{ http_port }}:8080"
+          - "{{ ansible_docker0.ipv4.address }}:{{ http_port }}:8080"

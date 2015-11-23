@@ -14,7 +14,7 @@
       docker:
         name: pr0gramm-thumby
         image: "{{ docker_image }}"
-        state: started
+        state: restarted
         pull: always
 
         env:
@@ -22,4 +22,4 @@
           DATADOG_APP_KEY: "{{ datadog_app_key }}"
 
         ports:
-          - "0.0.0.0:{{ thumby_port }}:5000"
+          - "{{ ansible_docker0.ipv4.address }}:{{ thumby_port }}:5000"

@@ -1,0 +1,2 @@
+- include: deploy-db-services.yaml
+- include: deploy-web-services.yaml
