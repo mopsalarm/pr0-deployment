@@ -23,6 +23,7 @@
         special_time: weekly
         job: >
           sh -c '
+          docker pull quay.io/letsencrypt/letsencrypt:latest ;
           docker rm -f letsencrypt ;
           docker run --rm -p 172.17.42.1:444:443 -p 172.17.42.1:81:80
           --name letsencrypt
@@ -31,7 +32,8 @@
           quay.io/letsencrypt/letsencrypt:latest
           auth -d pr0.wibbly-wobbly.de
           -m mopsalarm.pr0gramm@gmx.de
-          --renew-by-default --agree-dev-preview --agree-tos
+          --renew-by-default --agree-tos ;
+          killall -SIGUSR1 nginx
           '
 
     - name: start nginx container
