@@ -8,7 +8,7 @@
       docker:
         name: postgres
         image: postgres:9.5-beta2
-        state: restarted
+        state: reloaded
         pull: always
 
         env:

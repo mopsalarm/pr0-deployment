@@ -10,7 +10,7 @@
       docker:
         name: pr0gramm-categories
         image: mopsalarm/pr0gramm-categories
-        state: restarted
+        state: reloaded
         pull: always
 
         env:

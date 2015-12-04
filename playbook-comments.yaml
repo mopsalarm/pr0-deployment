@@ -9,8 +9,8 @@
     - name: start new docker container
       docker:
         name: pr0gramm-comments
-        image: mopsalarm/pr0gramm-comments
-        state: restarted
+        image: mopsalarm/pr0gramm-comments:latest
+        state: reloaded
         pull: always
 
         env:

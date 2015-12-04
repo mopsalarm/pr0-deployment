@@ -14,7 +14,7 @@
       docker:
         name: pr0gramm-thumby
         image: "{{ docker_image }}"
-        state: restarted
+        state: reloaded
         pull: always
 
         env:

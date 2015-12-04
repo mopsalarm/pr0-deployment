@@ -38,7 +38,7 @@
       docker:
         name: nginx
         image: nginx
-        state: restarted
+        state: reloaded
         pull: always
 
         ports:

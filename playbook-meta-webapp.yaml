@@ -10,7 +10,7 @@
       docker:
         name: pr0gramm-meta-webapp
         image: mopsalarm/pr0gramm-meta-webapp
-        state: restarted
+        state: reloaded
         pull: always
 
         env:

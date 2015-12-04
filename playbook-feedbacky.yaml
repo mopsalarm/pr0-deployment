@@ -13,7 +13,7 @@
       docker:
         name: pr0gramm-feedbacky
         image: mopsalarm/pr0gramm-feedback
-        state: restarted
+        state: reloaded
         pull: always
 
         ports:

@@ -10,7 +10,7 @@
     docker:
       name: pr0gramm-gif2webm
       image: mopsalarm/gif2webm
-      state: restarted
+      state: reloaded
       pull: always
 
       env:
