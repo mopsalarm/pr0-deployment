@@ -25,12 +25,14 @@
           sh -c '
           docker pull quay.io/letsencrypt/letsencrypt:latest ;
           docker rm -f letsencrypt ;
-          docker run --rm -p 172.17.42.1:444:443 -p 172.17.42.1:81:80
+          docker run --rm -p 444:444 -p 81:81
           --name letsencrypt
+          -v "/data/nginx/static:/webroot"
           -v "/etc/letsencrypt:/etc/letsencrypt"
           -v "/var/lib/letsencrypt:/var/lib/letsencrypt"
           quay.io/letsencrypt/letsencrypt:latest
           auth -d pr0.wibbly-wobbly.de
+          --webroot --webroot-path /webroot
           -m mopsalarm.pr0gramm@gmx.de
           --renew-by-default --agree-tos ;
           killall -SIGUSR1 nginx
@@ -40,7 +42,7 @@
       docker:
         name: nginx
         image: nginx
-        state: reloaded
+        state: restarted
         pull: always
 
         ports:
