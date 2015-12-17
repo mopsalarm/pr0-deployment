@@ -11,12 +11,26 @@
         - /data/nginx/cache
         - /data/nginx/static
 
-    - name: copy nginx config file
-      copy:
-        src: files/nginx.conf
-        dest: /data/nginx/conf.d/nginx.conf
+    - name: copy config files
+      copy: src="files/{{ item }}" dest="/data/nginx/conf.d/{{ item }}"
+      with_items:
+        - nginx.conf
+        - _nginx_pr0.inc
 
-    - name: generate (or renew ssl certificates)
+    - name: update website git repo
+      git:
+        repo: "https://github.com/mopsalarm/Pr0.git"
+        dest: /data/nginx/app.pr0gramm.com
+        version: gh-pages
+
+    - name: generate cronjob to update app.pr0gramm.com
+      tags: cronjob
+      cron:
+        name: update_app_pr0gramm_com_website
+        minute: "*/2"
+        job: git -C /data/nginx/app.pr0gramm.com pull
+
+    - name: generate cronjob to renew ssl certificates
       tags: cronjob
       cron:
         name: refresh_ssl_certificates
@@ -25,16 +39,18 @@
           sh -c '
           docker pull quay.io/letsencrypt/letsencrypt:latest ;
           docker rm -f letsencrypt ;
+          for DOMAIN in pr0.wibbly-wobbly.de app.pr0gramm.com ; do
           docker run --rm -p 444:444 -p 81:81
           --name letsencrypt
           -v "/data/nginx/static:/webroot"
           -v "/etc/letsencrypt:/etc/letsencrypt"
           -v "/var/lib/letsencrypt:/var/lib/letsencrypt"
           quay.io/letsencrypt/letsencrypt:latest
-          auth -d pr0.wibbly-wobbly.de
+          auth -d $DOMAIN
           --webroot --webroot-path /webroot
           -m mopsalarm.pr0gramm@gmx.de
           --renew-by-default --agree-tos ;
+          done ;
           killall -SIGUSR1 nginx
           '
 
