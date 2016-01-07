@@ -29,7 +29,7 @@
         name: update_app_pr0gramm_com_website
         minute: "*/10"
         job: >
-          dogwrap -k {{ datadog_api_key }} -n "refresh app.pr0gramm.com" --tags cron,gh-pages "git -C /data/nginx/app.pr0gramm.com pull origin gh-pages"
+          dogwrap -k {{ datadog_api_key }} -n "refresh app.pr0gramm.com" --tags cron,gh-pages -m all "git -C /data/nginx/app.pr0gramm.com pull origin gh-pages"
 
     - name: copy refresh-ssl-certificates script
       copy: src="files/refresh-ssl-certificates.sh" dest="/root/refresh-ssl-certificates.sh" mode=0755
@@ -43,7 +43,7 @@
         hour: "4"
         day: "*/5"
         job: >
-          dogwrap -k {{ datadog_api_key }} -n "refresh certificates" --tags cron,letsencrypt "/root/refresh-ssl-certificates.sh"
+          dogwrap -k {{ datadog_api_key }} -n "refresh certificates" --tags cron,letsencrypt -m all "/root/refresh-ssl-certificates.sh"
 
     - name: start nginx container
       docker:
