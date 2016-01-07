@@ -16,5 +16,5 @@ for DOMAIN in pr0.wibbly-wobbly.de app.pr0gramm.com ; do
       --renew-by-default --agree-tos
 done
 
-echo "sending SIGUSR1 to nginx"
-killall -SIGUSR1 nginx
+echo "reloading nginx"
+docker exec nginx /etc/init.d/nginx reload
