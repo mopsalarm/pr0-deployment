@@ -27,8 +27,13 @@
       tags: cronjob
       cron:
         name: update_app_pr0gramm_com_website
-        minute: "*/2"
-        job: git -C /data/nginx/app.pr0gramm.com pull origin gh-pages
+        minute: "*/10"
+        job: >
+          dogwrap -k {{ datadog_api_key }} -n "refresh app.pr0gramm.com" --tags cron,gh-pages "git -C /data/nginx/app.pr0gramm.com pull origin gh-pages"
+
+    - name: copy refresh-ssl-certificates script
+      copy: src="files/refresh-ssl-certificates.sh" dest="/root/refresh-ssl-certificates.sh" mode=0755
+      tags: cronjob
 
     - name: generate cronjob to renew ssl certificates
       tags: cronjob
@@ -38,22 +43,7 @@
         hour: "4"
         day: "*/5"
         job: >
-          sh -c '
-          docker pull quay.io/letsencrypt/letsencrypt:latest ;
-          docker rm -f letsencrypt ;
-          for DOMAIN in pr0.wibbly-wobbly.de app.pr0gramm.com ; do
-          docker run --rm --name letsencrypt
-          -v "/data/nginx/static:/webroot"
-          -v "/etc/letsencrypt:/etc/letsencrypt"
-          -v "/var/lib/letsencrypt:/var/lib/letsencrypt"
-          quay.io/letsencrypt/letsencrypt:latest
-          auth -d $DOMAIN
-          --webroot --webroot-path /webroot
-          -m mopsalarm.pr0gramm@gmx.de
-          --renew-by-default --agree-tos ;
-          done ;
-          killall -SIGUSR1 nginx
-          '
+          dogwrap -k {{ datadog_api_key }} -n "refresh certificates" --tags cron,letsencrypt "/root/refresh-ssl-certificates.sh"
 
     - name: start nginx container
       docker:
