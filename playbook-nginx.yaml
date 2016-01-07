@@ -28,20 +28,21 @@
       cron:
         name: update_app_pr0gramm_com_website
         minute: "*/2"
-        job: git -C /data/nginx/app.pr0gramm.com pull
+        job: git -C /data/nginx/app.pr0gramm.com pull origin gh-pages
 
     - name: generate cronjob to renew ssl certificates
       tags: cronjob
       cron:
         name: refresh_ssl_certificates
-        special_time: weekly
+        minute: "0"
+        hour: "4"
+        day: "*/5"
         job: >
           sh -c '
           docker pull quay.io/letsencrypt/letsencrypt:latest ;
           docker rm -f letsencrypt ;
           for DOMAIN in pr0.wibbly-wobbly.de app.pr0gramm.com ; do
-          docker run --rm -p 444:444 -p 81:81
-          --name letsencrypt
+          docker run --rm --name letsencrypt
           -v "/data/nginx/static:/webroot"
           -v "/etc/letsencrypt:/etc/letsencrypt"
           -v "/var/lib/letsencrypt:/var/lib/letsencrypt"
