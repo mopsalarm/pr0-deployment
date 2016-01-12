@@ -24,3 +24,6 @@
 
     - name: install httpie via pip
       command: pip install httpie
+
+    - name: fix local network interface
+      shell: "ip addr add 127.0.0.1/8 dev lo && ip link set lo up"

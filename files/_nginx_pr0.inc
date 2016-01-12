@@ -1,4 +1,3 @@
-
 ssl_session_cache shared:SSL:1m;
 ssl_session_timeout 1440m;
 
@@ -28,6 +27,29 @@ location ^~ /api/meta/v1/ {
   proxy_connect_timeout 2s;
   proxy_read_timeout 2s;
   proxy_send_timeout 2s;
+}
+
+location = /api/meta/v1/items {
+  proxy_pass http://172.17.42.1:15003/items;
+  proxy_connect_timeout 2s;
+  proxy_read_timeout 2s;
+  proxy_send_timeout 2s;
+
+  proxy_cache small;
+  proxy_cache_valid 15s;
+  proxy_cache_methods POST;
+  proxy_cache_key "$uri|$args|$request_body";
+}
+
+location ~ ^/api/meta/v1/(user/[^/]+) {
+  proxy_pass http://172.17.42.1:15003/$1;
+  proxy_connect_timeout 2s;
+  proxy_read_timeout 2s;
+  proxy_send_timeout 2s;
+
+  proxy_cache small;
+  proxy_cache_valid 60s;
+  proxy_cache_key "$uri";
 }
 
 location ^~ /api/feedback/v1/ {
