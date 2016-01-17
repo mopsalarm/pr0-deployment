@@ -81,10 +81,14 @@ location /.well-known/ {
   alias /data/nginx/static/.well-known/;
 }
 
-location = /update.json {
-  rewrite ^ $scheme://raw.githubusercontent.com/mopsalarm/pr0gramm-updates/beta/open/update.json;
+location = /stable/open/update.json {
+  proxy_pass https://raw.githubusercontent.com/mopsalarm/pr0gramm-updates/master/open/update.json;
+  proxy_cache small;
+  proxy_cache_valid 60s;
 }
 
-location = /beta/update.json {
-  rewrite ^ $scheme://raw.githubusercontent.com/mopsalarm/pr0gramm-updates/beta/open/update.json;
+location = /beta/open/update.json {
+  proxy_pass https://raw.githubusercontent.com/mopsalarm/pr0gramm-updates/beta/open/update.json;
+  proxy_cache small;
+  proxy_cache_valid 60s;
 }
