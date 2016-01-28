@@ -81,14 +81,38 @@ location /.well-known/ {
   alias /data/nginx/static/.well-known/;
 }
 
-location = /stable/open/update.json {
-  proxy_pass https://raw.githubusercontent.com/mopsalarm/pr0gramm-updates/master/open/update.json;
+location ^~ /update-manager/ {
+  proxy_pass http://172.17.42.1:15052/update-manager/;
+  auth_basic "pr0gramm update manager";
+  auth_basic_user_file "conf.d/htpasswd";
+  client_max_body_size 8M;
+}
+
+location ^~ /apk/ {
+  proxy_pass http://172.17.42.1:15052/apk/;
+  proxy_cache webm;
+  expires 1y;
+}
+
+location = /pr0gramm-latest.apk {
+  proxy_pass http://172.17.42.1:15052/pr0gramm-latest.apk;
   proxy_cache small;
-  proxy_cache_valid 60s;
+  proxy_cache_valid 8s;
+}
+
+location = /stable/open/update.json {
+  proxy_pass http://172.17.42.1:15052/stable/update.json;
+  proxy_cache small;
+  proxy_cache_valid 8s;
 }
 
 location = /beta/open/update.json {
-  proxy_pass https://raw.githubusercontent.com/mopsalarm/pr0gramm-updates/beta/open/update.json;
+  proxy_pass http://172.17.42.1:15052/beta/update.json;
   proxy_cache small;
-  proxy_cache_valid 60s;
+  proxy_cache_valid 8s;
+}
+
+location ~ ^/(beta|stable)/update.json$ {
+  rewrite ^/(beta|stable)/update.json$ /$1/open/update.json redirect;
+  return 404;
 }
