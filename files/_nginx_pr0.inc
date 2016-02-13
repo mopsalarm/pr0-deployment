@@ -23,14 +23,14 @@ location ^~ /api/gif-to-webm/v1/ {
 }
 
 location ^~ /api/meta/v1/ {
-  proxy_pass http://172.17.42.1:15003/;
+  proxy_pass http://172.17.42.1:15004/;
   proxy_connect_timeout 2s;
   proxy_read_timeout 2s;
   proxy_send_timeout 2s;
 }
 
 location = /api/meta/v1/items {
-  proxy_pass http://172.17.42.1:15003/items;
+  proxy_pass http://172.17.42.1:15004/items;
   proxy_connect_timeout 2s;
   proxy_read_timeout 2s;
   proxy_send_timeout 2s;
@@ -41,8 +41,8 @@ location = /api/meta/v1/items {
   proxy_cache_key "$uri|$args|$request_body";
 }
 
-location ~ ^/api/meta/v1/(user/[^/]+) {
-  proxy_pass http://172.17.42.1:15003/$1;
+location ~ ^/api/meta/v1/user/([^/]+)$ {
+  proxy_pass http://172.17.42.1:15004/user/$1;
   proxy_connect_timeout 2s;
   proxy_read_timeout 2s;
   proxy_send_timeout 2s;
