@@ -10,10 +10,17 @@ ssl_ciphers "ECDHE-ECDSA-AES128-GCM-SHA256 ECDHE-ECDSA-AES256-GCM-SHA384 ECDHE-E
 ssl_stapling on;
 ssl_stapling_verify on;
 
-location ~ ^/api/thumby/v1/(.+)/thumb.jpg$ {
-  proxy_pass http://172.17.42.1:15001/$1;
+location ~ "^/api/thumby/v1/(aHR0[^/]{5,90})/thumb.jpg$" {
+  proxy_pass http://backend_thumby/$1;
   proxy_cache thumby;
+
+  proxy_cache_valid 200 1y;
+  proxy_cache_valid any 1m;
   expires 1y;
+}
+
+location ~ ^/api/thumby/v1/.*$ {
+  return 404;
 }
 
 location ^~ /api/gif-to-webm/v1/ {

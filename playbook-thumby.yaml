@@ -1,9 +1,8 @@
 
-- hosts: hosts
+- hosts: thumby-hosts
   vars:
     thumby_port: 15001
     datadog_api_key: "your api key here"
-    datadog_app_key: "your app key here"
     docker_image: mopsalarm/pr0gramm-thumby
 
   tasks:
@@ -17,9 +16,9 @@
         state: reloaded
         pull: always
 
-        env:
-          DATADOG_API_KEY: "{{ datadog_api_key }}"
-          DATADOG_APP_KEY: "{{ datadog_app_key }}"
+        command: |
+          --datadog={{ datadog_api_key }}
 
         ports:
-          - "{{ ansible_docker0.ipv4.address }}:{{ thumby_port }}:5000"
+          - "{{ ansible_docker0.ipv4.address }}:{{ thumby_port }}:8080"
+          - "{{ ansible_eth0.ipv4.address }}:{{ thumby_port }}:8080"
