@@ -119,6 +119,12 @@ location = /beta/open/update.json {
   proxy_cache_valid 8s;
 }
 
+location = /info-message.json {
+  proxy_pass http://172.17.42.1:15052/info-message.json;
+  proxy_cache small;
+  proxy_cache_valid 8s;
+}
+
 location ~ ^/(beta|stable)/update.json$ {
   rewrite ^/(beta|stable)/update.json$ /$1/open/update.json redirect;
   return 404;
