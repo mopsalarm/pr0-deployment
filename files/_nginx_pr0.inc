@@ -69,6 +69,11 @@ location ^~ /api/categories/v1/ {
 
 location ^~ /api/comments/v1/ {
   proxy_pass http://172.17.42.1:15051/;
+
+  proxy_cache small;
+  proxy_cache_valid 4s;
+  proxy_cache_methods GET;
+  proxy_cache_key "$uri|$args";
 }
 
 location /api/ {
