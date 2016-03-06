@@ -24,7 +24,7 @@ location ~ ^/api/thumby/v1/.*$ {
 }
 
 location ^~ /api/gif-to-webm/v1/ {
-  proxy_pass http://172.17.42.1:15000/;
+  proxy_pass http://104.236.68.203:15000/;
   proxy_cache webm;
   expires 1y;
 }

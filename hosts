@@ -4,3 +4,6 @@
 [thumby-hosts]
 46.101.134.19   ansible_ssh_user=root ansible_ssh_port=1022
 104.236.68.203  ansible_ssh_user=root ansible_ssh_port=22
+
+[webm-hosts]
+104.236.68.203  ansible_ssh_user=root ansible_ssh_port=22

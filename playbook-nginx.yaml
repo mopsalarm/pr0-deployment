@@ -26,7 +26,7 @@
 
     - name: update website git repo
       git:
-        repo: "https://github.com/mopsalarm/Pr0.git"
+        repo: "https://github.0com/mopsalarm/Pr0.git"
         dest: /data/nginx/app.pr0gramm.com
         version: gh-pages
 
