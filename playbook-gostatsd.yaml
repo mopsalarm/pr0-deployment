@@ -1,0 +1,29 @@
+
+- hosts: hosts
+  tasks:
+    - name: copy statsd config file
+      template: src=templates/statsd.yaml dest=/data/statsd.yaml
+
+    - name: remove previous container
+      command: docker rm -fv statsd
+      ignore_errors: true
+
+    - name: start new docker container
+      docker:
+        name: statsd
+        image: atlassianlabs/gostatsd:0.13.4
+        state: reloaded
+        pull: always
+
+        expose:
+          - 8125/udp
+        ports:
+          - "8125:8125/udp"
+
+        command: >
+          --backends datadog
+          --config-path /statsd.yaml
+          --percent-threshold 90,95,99
+
+        volumes:
+          - "/data/statsd.yaml:/statsd.yaml:ro"
