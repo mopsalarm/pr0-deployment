@@ -24,6 +24,7 @@
           --backends datadog
           --config-path /statsd.yaml
           --percent-threshold 90,95,99
+          --flush-interval 60s
 
         volumes:
           - "/data/statsd.yaml:/statsd.yaml:ro"
