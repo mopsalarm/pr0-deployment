@@ -18,7 +18,7 @@
         expose:
           - 8125/udp
         ports:
-          - "8125:8125/udp"
+          - "18125:8125/udp"
 
         command: >
           --backends datadog
@@ -28,3 +28,25 @@
 
         volumes:
           - "/data/statsd.yaml:/statsd.yaml:ro"
+
+    - name: start socat proxy
+      tags: statsd-proxy
+      docker:
+        name: socat
+        image: sequenceiq/socat:1.0.0
+        state: reloaded
+        pull: always
+
+        expose:
+          - 8125/udp
+
+        ports:
+          - "8125:8125/udp"
+
+        links:
+          - statsd
+
+        command: >
+          socat
+          UDP4-RECVFROM:8125,fork
+          UDP4-SENDTO:statsd:8125
