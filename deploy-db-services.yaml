@@ -1,5 +1,0 @@
-# deploys the services that require the database
-- include: playbook-postgres.yaml
-- include: playbook-meta-update.yaml
-- include: playbook-categories.yaml
-- include: playbook-comments.yaml

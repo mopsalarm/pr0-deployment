@@ -1,15 +1,19 @@
 - hosts: hosts
 
+  vars:
+    version: 9.5.3
+
   tasks:
     - name: assures postgres data directory exists
-      file: path=/data/postgres/ state=directory
+      file: path=/data/postgres{{ version }}/ state=directory
 
     - name: start postgres container
       docker:
-        name: postgres
-        image: postgres:9.5-beta2
+        name: postgres  
+        image: "postgres:{{ version }}"
         state: reloaded
         pull: always
+        restart_policy: unless-stopped
 
         env:
           PGDATA: /var/lib/postgresql/data/pg
@@ -20,4 +24,4 @@
           - "{{ ansible_docker0.ipv4.address }}:5432:5432"
 
         volumes:
-          - "/data/postgres:/var/lib/postgresql/data"
+          - "/data/postgres{{ version }}:/var/lib/postgresql/data"

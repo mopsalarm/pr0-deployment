@@ -10,6 +10,7 @@
         image: eranchetz/logrotate
         state: reloaded
         pull: always
+        restart_policy: unless-stopped
 
         volumes:
           - "/var/lib/docker/containers:/var/lib/docker/containers:rw"

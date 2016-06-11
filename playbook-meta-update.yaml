@@ -8,12 +8,14 @@
     - name: start new docker container for update service
       docker:
         name: pr0gramm-meta-update
-        image: mopsalarm/pr0gramm-meta-update
+        image: mopsalarm/go-pr0gramm-meta-update
         state: reloaded
         pull: always
+        restart_policy: unless-stopped
 
-        command: "--postgres {{ ansible_docker0.ipv4.address }}"
+        command: >
+          --postgres 'host={{ ansible_docker0.ipv4.address }} user=postgres password=password sslmode=disable'
+          --datadog {{ datadog_api_key }}
 
-        env:
-          DATADOG_API_KEY: "{{ datadog_api_key }}"
-          DATADOG_APP_KEY: "{{ datadog_app_key }}"
+        extra_hosts:
+          pr0gramm.com: "{{ pr0gramm_ip }}"

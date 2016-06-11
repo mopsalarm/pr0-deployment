@@ -14,11 +14,10 @@
         image: atlassianlabs/gostatsd:0.13.4
         state: reloaded
         pull: always
+        restart_policy: unless-stopped
 
         expose:
           - 8125/udp
-        ports:
-          - "18125:8125/udp"
 
         command: >
           --backends datadog
@@ -32,10 +31,11 @@
     - name: start socat proxy
       tags: statsd-proxy
       docker:
-        name: socat
+        name: statsd-proxy
         image: sequenceiq/socat:1.0.0
         state: reloaded
         pull: always
+        restart_policy: unless-stopped
 
         expose:
           - 8125/udp

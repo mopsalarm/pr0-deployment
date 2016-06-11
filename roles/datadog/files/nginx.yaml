@@ -1,4 +1,4 @@
 init_config:
 
 instances:
-  - nginx_status_url: "http://localhost/basic_status"
+  - nginx_status_url: "http://0.0.0.0/basic_status"

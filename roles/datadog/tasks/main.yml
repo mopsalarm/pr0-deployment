@@ -8,10 +8,6 @@
   notify: restart datadog
 
 - copy:
-    src: docker_daemon.yaml
-    dest: /etc/dd-agent/conf.d/docker_daemon.yaml
-
-- copy:
     src: nginx.yaml
     dest: /etc/dd-agent/conf.d/nginx.yaml
 
@@ -20,6 +16,6 @@
     dest: /etc/dd-agent/supervisor.conf
 
 - name: Install datadog tools like "dogwrap"
-  command: pip install datadog
+  pip: name=datadog state=latest
 
 - service: name=datadog-agent state=restarted

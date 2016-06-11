@@ -15,8 +15,9 @@
         image: "{{ docker_image }}"
         state: reloaded
         pull: always
+        restart_policy: unless-stopped
 
-        command: |
+        command: >
           --datadog={{ datadog_api_key }}
 
         ports:

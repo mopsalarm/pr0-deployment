@@ -11,11 +11,9 @@
         image: mopsalarm/pr0gramm-categories
         state: reloaded
         pull: always
+        restart_policy: unless-stopped
 
-        env:
-          GOMAXPROCS: 8
-
-        command: |
+        command: >
           --postgres 'host={{ ansible_docker0.ipv4.address }} user=postgres password=password sslmode=disable'
           --datadog {{ datadog_api_key }}
 

@@ -15,6 +15,7 @@
         image: mopsalarm/pr0gramm-feedback
         state: reloaded
         pull: always
+        restart_policy: unless-stopped
 
         ports:
           - "{{ ansible_docker0.ipv4.address }}:{{ feedbacky_port }}:5000"

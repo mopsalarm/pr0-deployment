@@ -58,6 +58,7 @@
         image: nginx
         state: restarted
         pull: always
+        restart_policy: unless-stopped
 
         ports:
           - "0.0.0.0:80:80"

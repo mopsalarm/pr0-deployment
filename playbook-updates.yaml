@@ -11,7 +11,7 @@
         image: mopsalarm/pr0gramm-updates:latest
         state: reloaded
         pull: always
-
+        restart_policy: unless-stopped
 
         volumes:
           - "{{ update_path }}/:/app/apks/"
