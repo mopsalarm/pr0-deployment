@@ -32,7 +32,7 @@
       tags: statsd-proxy
       docker:
         name: statsd-proxy
-        image: sequenceiq/socat:1.0.0
+        image: mopsalarm/udp-proxy
         state: reloaded
         pull: always
         restart_policy: unless-stopped
@@ -47,6 +47,6 @@
           - statsd
 
         command: >
-          socat
-          UDP4-RECVFROM:8125,fork
-          UDP4-SENDTO:statsd:8125
+          --source :8125
+          --target statsd:8125
+          --quiet
