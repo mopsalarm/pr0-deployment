@@ -16,6 +16,3 @@
         command: >
           --postgres 'host={{ ansible_docker0.ipv4.address }} user=postgres password=password sslmode=disable'
           --datadog {{ datadog_api_key }}
-
-        extra_hosts:
-          pr0gramm.com: "{{ pr0gramm_ip }}"
