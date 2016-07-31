@@ -9,7 +9,7 @@
 
     - name: start postgres container
       docker:
-        name: postgres  
+        name: postgres
         image: "postgres:{{ version }}"
         state: reloaded
         pull: always
@@ -25,3 +25,24 @@
 
         volumes:
           - "/data/postgres{{ version }}:/var/lib/postgresql/data"
+
+
+    - name: start pgweb container
+      tags: pgweb
+      docker:
+        name: postgres-web
+        image: donnex/pgweb:latest
+        state: reloaded
+        pull: always
+        restart_policy: unless-stopped
+
+        command: >
+          --host=postgres --user=postgres --pass=password
+          --auth-user={{ pgweb_user }} --auth-pass={{ pgweb_password }} --ssl=disable
+          --bind=0.0.0.0 --listen=8080
+
+        links:
+          - postgres
+
+        ports:
+          - "8080:8080"
