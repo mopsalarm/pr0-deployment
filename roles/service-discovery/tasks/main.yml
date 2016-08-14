@@ -1,0 +1,38 @@
+- name: Remove containers
+  command: docker rm -fv registrator consul
+  ignore_errors: true
+
+- name: Start consul container
+  docker:
+    name: consul
+    image: consul:v0.6.4
+    state: reloaded
+    restart_policy: unless-stopped
+    net: host
+    env:
+      CONSUL_LOCAL_CONFIG: "{{ consul_config|to_json }}"
+    command: >
+      agent -ui -server
+        --bind=0.0.0.0
+        --client=0.0.0.0
+        --advertise={{ consul_advertise_address }}
+        --encrypt={{ consul_secret }}
+        --node={{ inventory_hostname }}
+        {% if consul_bootstrap %}
+          -bootstrap-expect=1
+        {% endif %}
+        {% for host in consul_hosts %}
+          -retry-join={{ host }}
+        {% endfor %}
+
+- name: Start the registrator container
+  docker:
+    name: registrator
+    image: gliderlabs/registrator:v7
+    state: reloaded
+    restart_policy: unless-stopped
+    net: host
+    volumes:
+      - "/var/run/docker.sock:/tmp/docker.sock"
+    command: >
+      consul://{{ consul_advertise_address }}:8500

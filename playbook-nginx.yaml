@@ -1,11 +1,11 @@
 - hosts: hosts
 
   tasks:
-    - name: assures nginx config directory exists
+    - name: Ensures nginx config directory exists
       tags: config
       file: path=/data/nginx/conf.d state=directory
 
-    - name: assures nginx data directory exists
+    - name: Ensures nginx data directory exists
       tags: config
       file: path={{ item }} state=directory
       with_items:
@@ -18,7 +18,8 @@
       copy: src="files/{{ item }}" dest="/data/nginx/conf.d/{{ item }}"
       with_items:
         - nginx.conf
-        - _nginx_pr0.inc
+        - app.conf.ctmpl
+        - pr0gramm.server.conf
 
     - name: Copy htpasswd file
       tags: config
@@ -55,17 +56,28 @@
     - name: start nginx container
       docker:
         name: nginx
-        image: nginx
+        image: mopsalarm/nginx-consul-template
         state: restarted
         pull: always
         restart_policy: unless-stopped
 
+        net: host
+
         ports:
-          - "0.0.0.0:80:80"
-          - "0.0.0.0:443:443"
+          - "80:80"
+          - "443:443"
+
+        env:
+          SERVICE_IGNORE: true
+
+        extra_hosts:
+          consul: "{{ ansible_eth0.ipv4.address }}"
 
         volumes:
           - "/data/nginx/:/data/nginx/"
-          - "/data/nginx/conf.d/:/etc/nginx/conf.d/:ro"
+          - "/data/nginx/conf.d/nginx.conf:/etc/nginx/nginx.conf:ro"
+          - "/data/nginx/conf.d/pr0gramm.server.conf:/etc/nginx/conf.d/pr0gramm.server.conf:ro"
+          - "/data/nginx/conf.d/htpasswd:/etc/nginx/conf.d/htpasswd:ro"
+          - "/data/nginx/conf.d/app.conf.ctmpl:/etc/consul-templates/app.conf.ctmpl:ro"
           - "/data/nginx/logs/:/var/log/nginx/"
           - "/etc/letsencrypt/:/ssl/:ro"

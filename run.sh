@@ -1,3 +1,7 @@
 #!/bin/sh
 
-exec ansible-playbook -i hosts --ask-vault-pass -e @secrets.yaml "$@"
+if [ -f vault.key ] ; then
+  exec ansible-playbook -i hosts --vault-password-file=vault.key "$@"
+else
+  exec ansible-playbook -i hosts --ask-vault-password "$@"
+fi

@@ -1,10 +1,5 @@
 
-- hosts: hosts
-  vars:
-    http_port: 15051
-    datadog_api_key: "your api key here"
-    datadog_app_key: "your app key here"
-
+- hosts: database-hosts
   tasks:
     - name: start new docker container
       docker:
@@ -14,10 +9,15 @@
         pull: always
         restart_policy: unless-stopped
 
+        net: host
         env:
           DATADOG_API_KEY: "{{ datadog_api_key }}"
           DATADOG_APP_KEY: "{{ datadog_app_key }}"
-          POSTGRES_HOST: "{{ ansible_docker0.ipv4.address }}"
+          POSTGRES_HOST: "{{ ansible_eth0.ipv4.address }}"
+          PYTHONPATH: /app
 
         ports:
-          - "{{ ansible_docker0.ipv4.address }}:{{ http_port }}:8080"
+          - "15041:8080"
+
+        command: >
+           /env/bin/python -m bottle -s cherrypy -b 0.0.0.0:15041 --debug main

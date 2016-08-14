@@ -1,9 +1,33 @@
-[hosts]
-46.101.134.19   ansible_ssh_user=root ansible_ssh_port=1022
+[pr0-node-01]
+pr0-node-01 ansible_ssh_host=46.101.134.19 ansible_ssh_user=root ansible_ssh_port=1022 consul_bootstrap=true
 
-[thumby-hosts]
-46.101.134.19   ansible_ssh_user=root ansible_ssh_port=1022
+[pr0-node-02]
+pr0-node-02 ansible_ssh_host=139.59.157.9 ansible_ssh_user=root
+
+[netflix-host]
 104.236.68.203  ansible_ssh_user=root ansible_ssh_port=22
 
-[webm-hosts]
-104.236.68.203  ansible_ssh_user=root ansible_ssh_port=22
+[hosts:children]
+pr0-node-01
+
+[thumby-hosts:children]
+pr0-node-01
+pr0-node-02
+
+[gif2webm-hosts:children]
+pr0-node-02
+
+[update-manager-hosts:children]
+pr0-node-01
+
+[feedback-hosts:children]
+pr0-node-01
+
+[database-hosts:children]
+pr0-node-01
+
+[tags-hosts:children]
+pr0-node-02
+
+[analyze-hosts:children]
+pr0-node-02

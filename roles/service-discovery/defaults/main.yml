@@ -1,0 +1,10 @@
+consul_advertise_address: "{{ ansible_eth0.ipv4.address }}"
+
+consul_secret: changeme
+consul_hosts: []
+
+consul_config:
+  skip_leave_on_interrupt: true
+
+# only set true for one node
+consul_bootstrap: false

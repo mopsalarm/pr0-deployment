@@ -1,25 +1,18 @@
 
 - hosts: thumby-hosts
-  vars:
-    thumby_port: 15001
-    datadog_api_key: "your api key here"
-    docker_image: mopsalarm/pr0gramm-thumby
-
   tasks:
-    - name: remove previous container
-      docker: name=pr0gramm-thumby image={{ docker_image }} state=absent
-
-    - name: start new docker container
+    - name: Ensure thumby container is started
       docker:
         name: pr0gramm-thumby
-        image: "{{ docker_image }}"
+        image: mopsalarm/pr0gramm-thumby
         state: reloaded
         pull: always
         restart_policy: unless-stopped
+        net: host
 
         command: >
           --datadog={{ datadog_api_key }}
+          --port=15001
 
         ports:
-          - "{{ ansible_docker0.ipv4.address }}:{{ thumby_port }}:8080"
-          - "{{ ansible_eth0.ipv4.address }}:{{ thumby_port }}:8080"
+          - "15001:8080"

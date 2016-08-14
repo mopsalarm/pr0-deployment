@@ -4,31 +4,26 @@
     - name: copy statsd config file
       template: src=templates/statsd.yaml dest=/data/statsd.yaml
 
-    - name: remove previous container
-      command: docker rm -fv statsd
-      ignore_errors: true
-
-    - name: start new docker container
+    - name: start gostatsd docker container
       docker:
         name: statsd
-        image: atlassianlabs/gostatsd:0.13.4
+        image: atlassianlabs/gostatsd:0.14.10
         state: reloaded
-        pull: always
         restart_policy: unless-stopped
 
-        expose:
-          - 8125/udp
+        net: host
 
         command: >
           --backends datadog
           --config-path /statsd.yaml
           --percent-threshold 90,95,99
           --flush-interval 60s
+          --metrics-addr :8126
 
         volumes:
           - "/data/statsd.yaml:/statsd.yaml:ro"
 
-    - name: start socat proxy
+    - name: start statsd proxy
       tags: statsd-proxy
       docker:
         name: statsd-proxy
@@ -37,16 +32,14 @@
         pull: always
         restart_policy: unless-stopped
 
+        net: host
         expose:
           - 8125/udp
 
         ports:
           - "8125:8125/udp"
 
-        links:
-          - statsd
-
         command: >
           --source :8125
-          --target statsd:8125
+          --target {{ ansible_eth0.ipv4.address }}:8126
           --quiet

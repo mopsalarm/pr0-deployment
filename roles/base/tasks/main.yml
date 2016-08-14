@@ -1,0 +1,37 @@
+- name: add hushlogin
+  file: path=/root/.hushlogin state=touch
+
+- name: update apt cache
+  apt: update_cache=yes cache_valid_time=3600
+
+- name: install htop
+  apt: name=htop state=present
+
+- name: install screen
+  apt: name=screen state=present
+
+- name: install git
+  apt: name=git state=present
+
+- name: install python-setuptools
+  apt: name=python-setuptools state=present
+
+- name: install pip
+  command: easy_install -U pip
+
+- name: install docker-py via pip
+  pip: name=docker-py version=1.9.0
+
+- name: install httpie via pip
+  pip: name=httpie state=latest
+
+- name: fix local network interface
+  shell: "ip addr add 127.0.0.1/8 dev lo && ip link set lo up"
+  ignore_errors: true
+
+- name: configure docker
+  notify: restart docker
+  lineinfile:
+    dest: /etc/default/docker
+    regexp: DOCKER_OPTS
+    line: DOCKER_OPTS="--iptables=false --userland-proxy=false"

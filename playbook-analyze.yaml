@@ -1,0 +1,19 @@
+
+- hosts: analyze-hosts
+  tasks:
+    - name: Remove old container
+      command: docker rm -fv pr0gramm-analyze
+      ignore_errors: true
+
+    - name: start new docker container for analyze service
+      docker:
+        name: pr0gramm-analyze
+        image: mopsalarm/go-pr0gramm-analyze
+        pull: always
+        restart_policy: unless-stopped
+        cpu_shares: 256
+
+        command: >
+          --cleanup --parallel 1
+          --postgres {{ postgres_url }}
+          --max-item-age 60

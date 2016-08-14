@@ -1,9 +1,4 @@
-
-- hosts: hosts
-  vars:
-    http_port: 15052
-    update_path: /data/apks
-
+- hosts: update-manager-hosts
   tasks:
     - name: start new docker container
       docker:
@@ -12,9 +7,12 @@
         state: reloaded
         pull: always
         restart_policy: unless-stopped
+        net: host
 
         volumes:
-          - "{{ update_path }}/:/app/apks/"
+          - "/data/apks:/app/apks/"
 
         ports:
-          - "{{ ansible_docker0.ipv4.address }}:{{ http_port }}:8080"
+          - "15052:8080"
+
+        command: python -m bottle -s cherrypy -b 0.0.0.0:15052 main

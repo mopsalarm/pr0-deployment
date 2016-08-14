@@ -1,0 +1,12 @@
+- ufw: state="reset"
+  when: "{{ firewall_reset|bool }}"
+
+- ufw: route=yes rule=allow
+
+- ufw: src={{ item }} rule=allow
+  with_items: "{{ firewall_allow_hosts }}"
+
+- ufw: to_port={{ item }} rule=allow
+  with_items: "{{ firewall_allow_ports }}"
+
+- ufw: state="enabled" policy="reject" logging="low"

@@ -1,18 +1,14 @@
-- hosts: hosts
-
-  vars:
-    version: 9.5.3
+- hosts: database-hosts
 
   tasks:
-    - name: assures postgres data directory exists
-      file: path=/data/postgres{{ version }}/ state=directory
+    - name: Ensure postgres data directory exists
+      file: path=/data/postgres{{ postgres_version }}/ state=directory
 
-    - name: start postgres container
+    - name: Start postgres container
       docker:
         name: postgres
-        image: "postgres:{{ version }}"
+        image: "postgres:{{ postgres_version }}"
         state: reloaded
-        pull: always
         restart_policy: unless-stopped
 
         env:
@@ -20,29 +16,25 @@
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: password
 
+        net: host
         ports:
-          - "{{ ansible_docker0.ipv4.address }}:5432:5432"
+          - "5432:5432"
 
         volumes:
-          - "/data/postgres{{ version }}:/var/lib/postgresql/data"
+          - "/data/postgres{{ postgres_version }}:/var/lib/postgresql/data"
 
 
-    - name: start pgweb container
-      tags: pgweb
-      docker:
-        name: postgres-web
-        image: donnex/pgweb:latest
-        state: reloaded
-        pull: always
-        restart_policy: unless-stopped
-
-        command: >
-          --host=postgres --user=postgres --pass=password
-          --auth-user={{ pgweb_user }} --auth-pass={{ pgweb_password }} --ssl=disable
-          --bind=0.0.0.0 --listen=8080
-
-        links:
-          - postgres
-
-        ports:
-          - "8080:8080"
+    # - name: Start pgweb container
+    #   tags: pgweb
+    #   docker:
+    #     name: postgres-web
+    #     image: donnex/pgweb:latest
+    #     state: reloaded
+    #     pull: always
+    #     restart_policy: unless-stopped
+    #     publish_all_ports: true
+    #
+    #     command: >
+    #       --host=postgres --user=postgres --pass=password
+    #       --auth-user={{ pgweb_user }} --auth-pass={{ pgweb_password }} --ssl=disable
+    #       --bind=0.0.0.0 --listen=8080

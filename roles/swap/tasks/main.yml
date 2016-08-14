@@ -1,0 +1,11 @@
+- name: Create swap file
+  shell: "test -f /swap || (dd if=/dev/zero of=/swap bs=1M count={{ swap_size }} && mkswap /swap)"
+
+- name: Add swap to fstab
+  lineinfile:
+    dest: /etc/fstab
+    regexp: "/swap"
+    line: "/swap              none          swap      defaults              0      0"
+
+- name: Activate swap
+  command: swapon -a
