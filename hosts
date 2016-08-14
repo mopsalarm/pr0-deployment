@@ -29,5 +29,9 @@ pr0-node-01
 [tags-hosts:children]
 pr0-node-02
 
+[categories-hosts:children]
+pr0-node-01
+pr0-node-02
+
 [analyze-hosts:children]
 pr0-node-02
