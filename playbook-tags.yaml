@@ -29,3 +29,6 @@
           --datadog "{{ datadog_api_key }}"
           --checkpoint-file '/checkpoints/checkpoint.store'
           --verbose
+
+    - name: Wait for service to appear
+      wait_for: port=8081

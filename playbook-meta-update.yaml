@@ -1,6 +1,10 @@
 
 - hosts: database-hosts
   tasks:
+    - name: Remove existing container
+      command: docker rm -fv pr0gramm-meta-update
+      ignore_errors: true
+      
     - name: start new docker container for update service
       docker:
         name: pr0gramm-meta-update
