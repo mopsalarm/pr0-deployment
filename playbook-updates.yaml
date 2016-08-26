@@ -1,10 +1,14 @@
 - hosts: update-manager-hosts
   tasks:
+    - name: remove running instance
+      command: docker rm -fv pr0gramm-updates
+      ignore_errors: true
+
+
     - name: start new docker container
       docker:
         name: pr0gramm-updates
         image: mopsalarm/pr0gramm-updates:latest
-        state: reloaded
         pull: always
         restart_policy: unless-stopped
         net: host
