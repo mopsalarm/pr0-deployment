@@ -1,18 +1,10 @@
 
 - hosts: database-hosts
-  tasks:
-    - name: Remove existing container
-      command: docker rm -fv pr0gramm-meta-update
-      ignore_errors: true
-      
-    - name: start new docker container for update service
-      docker:
-        name: pr0gramm-meta-update
+  roles:
+    - role: deploy-service
+      service_name: pr0gramm-meta-update
+      service_docker:
         image: mopsalarm/go-pr0gramm-meta-update
-        state: reloaded
-        pull: always
-        restart_policy: unless-stopped
-
         command: >
           --postgres {{ postgres_url}}
           --datadog {{ datadog_api_key }}

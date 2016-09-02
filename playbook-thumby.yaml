@@ -1,18 +1,14 @@
 
 - hosts: thumby-hosts
-  tasks:
-    - name: Ensure thumby container is started
-      docker:
-        name: pr0gramm-thumby
+  serial: 1
+
+  roles:
+    - role: deploy-service
+      service_name: pr0gramm-thumby
+      service_port: 15001
+      service_docker:
         image: mopsalarm/pr0gramm-thumby
-        state: reloaded
-        pull: always
-        restart_policy: unless-stopped
-        net: host
-
-        command: >
-          --datadog={{ datadog_api_key }}
-          --port=15001
-
         ports:
           - "15001:8080"
+        command: >
+          --datadog={{ datadog_api_key }}

@@ -1,31 +1,29 @@
 - hosts: gif2webm-hosts
+  serial: 1
+  
+  roles:
+    - role: deploy-service
+      service_name: pr0gramm-gif2webm
+      service_port: 15000
+      service_docker:
+        image: mopsalarm/gif2webm
+
+        env:
+          DATADOG_API_KEY: "{{ datadog_api_key }}"
+          DATADOG_APP_KEY: "{{ datadog_app_key }}"
+          SERVICE_5000_NAME: pr0gramm-gif2webm
+
+        ports:
+          - "15000:5000"
+
+        volumes:
+          - "/data/webm:/app/webm"
+
   tasks:
-  - name: Ensure gif2webm container is started
-    docker:
-      name: pr0gramm-gif2webm
-      image: mopsalarm/gif2webm
-      state: reloaded
-      pull: always
-      restart_policy: unless-stopped
-      net: host
-
-      env:
-        DATADOG_API_KEY: "{{ datadog_api_key }}"
-        DATADOG_APP_KEY: "{{ datadog_app_key }}"
-        SERVICE_5000_NAME: pr0gramm-gif2webm
-
-      ports:
-        - "15000:5000"
-
-      volumes:
-        - "/data/webm:/app/webm"
-
-      command: /env/bin/python -m bottle -s cherrypy -b 0.0.0.0:15000 gif2webm
-
-  - name: Create cronjob to restart the webm container
-    tags: cronjob
-    cron:
-      name: restart webm container
-      special_time: daily
-      job: >
-        sh -c "rm -f /data/webm/* ; docker restart pr0gramm-gif2webm"
+    - name: Create cronjob to restart the webm container
+      tags: cronjob
+      cron:
+        name: restart webm container
+        special_time: daily
+        job: >
+          sh -c "rm -f /data/webm/* ; docker restart pr0gramm-gif2webm"

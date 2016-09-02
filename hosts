@@ -4,9 +4,6 @@ pr0-node-01 ansible_ssh_host=46.101.134.19 ansible_ssh_user=root ansible_ssh_por
 [pr0-node-02]
 pr0-node-02 ansible_ssh_host=139.59.157.9 ansible_ssh_user=root
 
-[netflix-host]
-104.236.68.203  ansible_ssh_user=root ansible_ssh_port=22
-
 [hosts:children]
 pr0-node-01
 
@@ -34,4 +31,7 @@ pr0-node-01
 pr0-node-02
 
 [analyze-hosts:children]
+pr0-node-02
+
+[settings-hosts:children]
 pr0-node-02

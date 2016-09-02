@@ -1,6 +1,7 @@
 - hosts: hosts
+  serial: 1
 
-  tasks:
+  pre_tasks:
     - name: Ensures nginx config directory exists
       tags: config
       file: path=/data/nginx/conf.d state=directory
@@ -53,15 +54,13 @@
         job: >
           dogwrap -k {{ datadog_api_key }} -n "refresh certificates" --tags cron,letsencrypt -m all "/root/refresh-ssl-certificates.sh"
 
-    - name: start nginx container
-      docker:
-        name: nginx
+  roles:
+    - role: deploy-service
+      tags: [restart-nginx, config]
+      service_name: nginx
+      service_port: 80
+      service_docker:
         image: mopsalarm/nginx-consul-template
-        state: restarted
-        pull: always
-        restart_policy: unless-stopped
-
-        net: host
 
         ports:
           - "80:80"
@@ -75,9 +74,9 @@
 
         volumes:
           - "/data/nginx/:/data/nginx/"
+          - "/data/nginx/logs/:/var/log/nginx/"
           - "/data/nginx/conf.d/nginx.conf:/etc/nginx/nginx.conf:ro"
           - "/data/nginx/conf.d/pr0gramm.server.conf:/etc/nginx/conf.d/pr0gramm.server.conf:ro"
           - "/data/nginx/conf.d/htpasswd:/etc/nginx/conf.d/htpasswd:ro"
           - "/data/nginx/conf.d/app.conf.ctmpl:/etc/consul-templates/app.conf.ctmpl:ro"
-          - "/data/nginx/logs/:/var/log/nginx/"
           - "/etc/letsencrypt/:/ssl/:ro"

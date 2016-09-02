@@ -1,20 +1,18 @@
 
 - hosts: feedback-hosts
-  tasks:
-    - name: start new docker container
-      docker:
-        name: pr0gramm-feedback
+  serial: 1
+
+  roles:
+    - role: deploy-service
+      service_name: pr0gramm-feedback
+      service_port: 15002
+      service_docker:
         image: mopsalarm/pr0gramm-feedback
-        state: reloaded
-        pull: always
-        restart_policy: unless-stopped
-        net: host
 
         ports:
           - "15002:5000"
 
         command: >
-          --port 15002
           --receiver "{{ feedback_receiver_address }}"
           --host "{{ feedback_smtp_host }}"
           --user "{{ feedback_smtp_user }}"

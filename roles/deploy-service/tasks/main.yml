@@ -1,0 +1,11 @@
+
+- name: "Remove old container for {{ service_name}}"
+  command: "docker rm -fv {{ service_name }}"
+  ignore_errors: true
+
+- name: "Start a new container for {{ service_name }}"
+  docker: "{{ service_docker_defaults | combine(service_docker) | combine({'name': service_name}) }}"
+
+- name: "Wait for service {{ service_name }} to open port {{ service_port|default('NONE') }}"
+  wait_for: port="{{ service_port }}"
+  when: "{{ service_port is defined and service_port > 0 }}"

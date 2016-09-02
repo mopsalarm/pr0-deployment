@@ -1,1 +1,11 @@
-- include: ufw.yml
+- name: Copy firwall script
+  template: src=firewall.sh.j2 dest=/etc/firewall.sh mode=0755
+
+- name: Install firewall-script to be run on boot
+  lineinfile:
+    name: /etc/rc.local
+    insertbefore: "exit 0"
+    line: "/etc/firewall.sh"
+
+- name: Run firewall script now
+  command: /etc/firewall.sh

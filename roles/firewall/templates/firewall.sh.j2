@@ -1,0 +1,65 @@
+#!/bin/sh
+set -ex
+
+# Disable old firewall if enabled
+ufw disable || true
+
+
+# Reset input chain and allow the basics.
+iptables -P INPUT ACCEPT
+iptables -F INPUT
+iptables -A INPUT -i lo -j ACCEPT
+iptables -A INPUT -m state --state RELATED,ESTABLISHED -j ACCEPT
+
+# Allow traffic from docker containers to the host
+iptables -A INPUT -i docker0 -j ACCEPT
+
+# Always allow ssh
+iptables -A INPUT -p tcp --dport 22 -j ACCEPT
+
+# Allow more ports
+{% for port in firewall_allow_ports %}
+  iptables -A INPUT -p tcp --dport {{ port }} -j ACCEPT
+  iptables -A INPUT -p udp --dport {{ port }} -j ACCEPT
+{% endfor %}
+
+# Allow more hosts
+{% for host in firewall_allow_hosts %}
+  iptables -A INPUT --src {{ host }} -j ACCEPT
+{% endfor %}
+
+# Drop the rest.
+iptables -P INPUT DROP
+
+# Create a PRE_DOCKER table with default DROP
+if iptables -C FORWARD -o docker0 -j PRE_DOCKER; then
+  # remove reference and flush
+  iptables -D FORWARD -o docker0 -j PRE_DOCKER
+  iptables -F PRE_DOCKER
+else
+  # Create the PRE_DOCKER chain
+  iptables -N PRE_DOCKER
+fi
+
+# Docker internal use
+iptables -A PRE_DOCKER -i docker0 -o docker0 -j ACCEPT
+iptables -A PRE_DOCKER -m state --state RELATED -j ACCEPT
+iptables -A PRE_DOCKER -i docker0 ! -o docker0 -j ACCEPT
+iptables -A PRE_DOCKER -o docker0 -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT
+
+# Allow connections to ports
+{% for port in firewall_allow_ports %}
+  iptables -A PRE_DOCKER -i eth0 -p tcp --dport {{ port }} -j ACCEPT
+  iptables -A PRE_DOCKER -i eth0 -p udp --dport {{ port }} -j ACCEPT
+{% endfor %}
+
+# Allow connections from hosts
+{% for host in firewall_allow_hosts %}
+  iptables -A PRE_DOCKER -i eth0 --src {{ host }} -j ACCEPT
+{% endfor %}
+
+# Default action is to drop packages
+iptables -A PRE_DOCKER -j DROP
+
+# put the new chain at the beginning of the FORWARD chain
+iptables -I FORWARD -o docker0 -j PRE_DOCKER

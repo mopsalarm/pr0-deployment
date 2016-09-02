@@ -30,8 +30,9 @@
   ignore_errors: true
 
 - name: configure docker
+  tags: configure-docker
   notify: restart docker
   lineinfile:
     dest: /etc/default/docker
     regexp: DOCKER_OPTS
-    line: DOCKER_OPTS="--iptables=false --userland-proxy=false"
+    line: DOCKER_OPTS="--iptables=true --userland-proxy=false"

@@ -1,27 +1,16 @@
 - hosts: categories-hosts
   serial: 1
-  tasks:
-
-    - name: remove old container
-      command: docker rm -fv pr0gramm-categories
-      ignore_errors: true
-
-    - name: start new docker container
-      docker:
-        name: pr0gramm-categories
+  roles:
+    - role: deploy-service
+      service_name: pr0gramm-categories
+      service_port: 15063
+      service_docker:
         image: mopsalarm/pr0gramm-categories
-        pull: always
-        restart_policy: unless-stopped
 
-        command: >
-          --port 15063
-          --datadog {{ datadog_api_key }}
-          --postgres {{ postgres_url }}
-          --tags-service http://139.59.157.9:8081
-
-        net: host
         ports:
           - "15063:8080"
 
-    - name: wait for post to open
-      wait_for: port=15063
+        command: >
+          --datadog {{ datadog_api_key }}
+          --postgres {{ postgres_url }}
+          --tags-service http://139.59.157.9:8081

@@ -1,0 +1,5 @@
+service_docker_defaults:
+  state: reloaded
+  pull: always
+  restart_policy: unless-stopped
+  

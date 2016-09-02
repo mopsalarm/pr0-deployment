@@ -1,17 +1,12 @@
 
 - hosts: tags-hosts
-  tasks:
-    - name: Remove old container
-      command: docker rm -fv pr0gramm-tags
-      ignore_errors: true
-
-    - name: start new docker container for tags service
-      docker:
-        name: pr0gramm-tags
+  serial: 1
+  roles:
+    - role: deploy-service
+      service_name: pr0gramm-tags
+      service_port: 8081
+      service_docker:
         image: mopsalarm/go-pr0gramm-tags
-        state: reloaded
-        pull: always
-        restart_policy: unless-stopped
 
         env:
           SERVICE_8080_NAME: pr0gramm-tags
@@ -19,16 +14,11 @@
         volumes:
           - "/data/tags/:/checkpoints/"
 
-        net: host
         ports:
           - "8081:8080"
 
         command: >
-          --http-listen :8081
           --postgres {{ postgres_url }}
           --datadog "{{ datadog_api_key }}"
           --checkpoint-file '/checkpoints/checkpoint.store'
           --verbose
-
-    - name: Wait for service to appear
-      wait_for: port=8081

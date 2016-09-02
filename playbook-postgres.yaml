@@ -1,22 +1,22 @@
 - hosts: database-hosts
+  serial: 1
 
-  tasks:
-    - name: Ensure postgres data directory exists
+  pre_tasks:
+    - name: Ensure data directory exists
       file: path=/data/postgres{{ postgres_version }}/ state=directory
 
-    - name: Start postgres container
-      docker:
-        name: postgres
+  roles:
+    - role: deploy-service
+      service_name: postgres
+      service_port: 5432
+      service_docker:
         image: "postgres:{{ postgres_version }}"
-        state: reloaded
-        restart_policy: unless-stopped
 
         env:
           PGDATA: /var/lib/postgresql/data/pg
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: password
 
-        net: host
         ports:
           - "5432:5432"
 

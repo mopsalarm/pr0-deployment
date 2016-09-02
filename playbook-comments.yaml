@@ -1,23 +1,16 @@
 
 - hosts: database-hosts
-  tasks:
-    - name: start new docker container
-      docker:
-        name: pr0gramm-comments
+  roles:
+    - role: deploy-service
+      service_name: pr0gramm-comments
+      service_port: 15041
+      service_docker:
         image: mopsalarm/pr0gramm-comments:latest
-        state: reloaded
-        pull: always
-        restart_policy: unless-stopped
 
-        net: host
         env:
           DATADOG_API_KEY: "{{ datadog_api_key }}"
           DATADOG_APP_KEY: "{{ datadog_app_key }}"
           POSTGRES_HOST: "{{ ansible_eth0.ipv4.address }}"
-          PYTHONPATH: /app
 
         ports:
           - "15041:8080"
-
-        command: >
-           /env/bin/python -m bottle -s cherrypy -b 0.0.0.0:15041 --debug main
