@@ -1,0 +1,26 @@
+
+- hosts: tags-hosts
+  tasks:
+    - name: Remove old container
+      command: docker rm -fv pr0gramm-track-settings
+      ignore_errors: true
+
+    - name: start new docker container for track-settings service
+      docker:
+        name: pr0gramm-track-settings
+        image: mopsalarm/go-pr0gramm-settings
+        state: reloaded
+        pull: always
+        restart_policy: unless-stopped
+
+        env:
+          SERVICE_8080_NAME: pr0gramm-track-settings
+
+        volumes:
+          - "/data/track-settings/:/settings/"
+
+        ports:
+          - "9645:8080"
+
+    - name: Wait for service to appear
+      wait_for: port=9645
