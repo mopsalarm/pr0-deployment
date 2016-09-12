@@ -1,0 +1,24 @@
+- name: Ensure that the config directory exists
+  file: name={{ dnsmasq_hosts_directory }} state=directory
+
+- name: Download hosts file
+  get_url: url="{{ dnsmasq_hosts_url }}" dest={{ dnsmasq_hosts_directory }}/hosts force=true
+
+- name: Replace ip addresses with redirect ip
+  command: sed -i s/0.0.0.0/{{ dnsmasq_redirect_ip }}/g {{ dnsmasq_hosts_directory }}/hosts
+
+- name: Download dnsmasq image
+  command: "docker pull {{ dnsmasq_image }}"
+
+- name: Remove previous dnsmasq container
+  command: docker rm -fv dnsmasq
+  ignore_errors: true
+
+- name: Start dnsmasq container
+  command: >
+    docker run -d --restart unless-stopped --name dnsmasq
+      --cap-add=NET_ADMIN
+      -p 53:53/udp -p 53:53/tcp
+      -v {{ dnsmasq_hosts_directory }}/:/etc/hosts.d/:ro
+      {{ dnsmasq_image }}
+      --hostsdir=/etc/hosts.d/

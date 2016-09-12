@@ -1,0 +1,6 @@
+dnsmasq_hosts_directory: /data/dnsmasq/hosts.d
+dnsmasq_image: andyshinn/dnsmasq:2.76
+dnsmasq_hosts_url: https://raw.githubusercontent.com/StevenBlack/hosts/master/hosts
+
+# the target will just drop all contetn
+dnsmasq_redirect_ip: 240.0.0.1

@@ -7,6 +7,9 @@ pr0-node-02 ansible_ssh_host=139.59.157.9 ansible_ssh_user=root
 [hosts:children]
 pr0-node-01
 
+[dnsmasq-hosts:children]
+pr0-node-02
+
 [thumby-hosts:children]
 pr0-node-01
 pr0-node-02
