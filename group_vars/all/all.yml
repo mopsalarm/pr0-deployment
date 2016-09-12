@@ -1,3 +1,5 @@
+docker_install: false
+
 postgres_version: 9.5.3
 
 postgres_url: "postgres://postgres:password@46.101.134.19?sslmode=disable"
@@ -5,7 +7,13 @@ postgres_url: "postgres://postgres:password@46.101.134.19?sslmode=disable"
 consul_hosts:
   - 46.101.134.19
   - 139.59.157.9
+  - 52.57.36.170
 
 firewall_allow_hosts:
   - 46.101.134.19
   - 139.59.157.9
+  - 52.57.36.170
+
+dnsmasq_extra_args: -S /consul/{{ ansible_ssh_host }}#8600
+
+custom_dns_server: 139.59.157.9

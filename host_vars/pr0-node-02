@@ -4,4 +4,3 @@ firewall_allow_ports:
   - 500
   - 4242
   - 4500
-  - 8125

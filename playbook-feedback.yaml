@@ -8,6 +8,8 @@
       service_port: 15002
       service_docker:
         image: mopsalarm/pr0gramm-feedback
+        env:
+          SERVICE_5000_NAME: pr0gramm-feedback
 
         ports:
           - "15002:5000"

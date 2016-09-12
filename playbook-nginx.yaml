@@ -70,7 +70,7 @@
           SERVICE_IGNORE: true
 
         extra_hosts:
-          consul: "{{ ansible_eth0.ipv4.address }}"
+          consul: "{{ ansible_ssh_host }}"
 
         volumes:
           - "/data/nginx/:/data/nginx/"

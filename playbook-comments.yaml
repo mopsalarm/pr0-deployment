@@ -1,5 +1,6 @@
 
-- hosts: database-hosts
+- hosts: comments-hosts
+  serial: 1
   roles:
     - role: deploy-service
       service_name: pr0gramm-comments
@@ -10,7 +11,7 @@
         env:
           DATADOG_API_KEY: "{{ datadog_api_key }}"
           DATADOG_APP_KEY: "{{ datadog_app_key }}"
-          POSTGRES_HOST: "{{ ansible_eth0.ipv4.address }}"
+          POSTGRES_HOST: "{{ ansible_ssh_host }}"
 
         ports:
           - "15041:8080"

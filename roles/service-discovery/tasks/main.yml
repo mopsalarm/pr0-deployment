@@ -25,7 +25,13 @@
           -retry-join={{ host }}
         {% endfor %}
 
+- name: Remove registrator container
+  tags: registrator
+  command: docker rm -fv registrator
+  ignore_errors: true
+
 - name: Start the registrator container
+  tags: registrator
   docker:
     name: registrator
     image: gliderlabs/registrator:v7
@@ -35,4 +41,4 @@
     volumes:
       - "/var/run/docker.sock:/tmp/docker.sock"
     command: >
-      consul://{{ consul_advertise_address }}:8500
+      --cleanup --ip={{ ansible_ssh_host }} consul://{{ consul_advertise_address }}:8500

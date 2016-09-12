@@ -1,4 +1,4 @@
-consul_advertise_address: "{{ ansible_eth0.ipv4.address }}"
+consul_advertise_address: "{{ ansible_ssh_host }}"
 
 consul_secret: changeme
 consul_hosts: []

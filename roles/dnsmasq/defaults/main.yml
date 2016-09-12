@@ -4,3 +4,5 @@ dnsmasq_hosts_url: https://raw.githubusercontent.com/StevenBlack/hosts/master/ho
 
 # the target will just drop all contetn
 dnsmasq_redirect_ip: 240.0.0.1
+
+dnsmasq_extra_args: ""

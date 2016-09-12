@@ -21,4 +21,4 @@
       -p 53:53/udp -p 53:53/tcp
       -v {{ dnsmasq_hosts_directory }}/:/etc/hosts.d/:ro
       {{ dnsmasq_image }}
-      --hostsdir=/etc/hosts.d/
+      --hostsdir=/etc/hosts.d/ {{ dnsmasq_extra_args }}

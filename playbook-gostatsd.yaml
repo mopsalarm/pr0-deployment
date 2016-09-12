@@ -31,5 +31,5 @@
 
         command: >
           --source :8125
-          --target {{ ansible_eth0.ipv4.address }}:8126
+          --target {{ ansible_ssh_host }}:8126
           --quiet

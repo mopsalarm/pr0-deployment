@@ -3,6 +3,10 @@
     - role: swap
       tags: swap
 
+    - role: docker-install
+      tags: docker-install
+      when: "{{ docker_install }}"
+
     - role: base
       tags: base
 
