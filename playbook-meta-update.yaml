@@ -6,5 +6,5 @@
       service_docker:
         image: mopsalarm/go-pr0gramm-meta-update
         command: >
-          --postgres {{ postgres_url}}
+          --postgres {{ postgres_url }}
           --datadog {{ datadog_api_key }}

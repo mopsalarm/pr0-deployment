@@ -54,9 +54,14 @@
         job: >
           dogwrap -k {{ datadog_api_key }} -n "refresh certificates" --tags cron,letsencrypt -m all "/root/refresh-ssl-certificates.sh"
 
+    - name: Try to reload nginx config in the container
+      tags: config
+      command: docker exec nginx nginx -s reload
+      ignore_errors: true
+
   roles:
     - role: deploy-service
-      tags: [restart-nginx, config]
+      tags: [restart-nginx]
       service_name: nginx
       service_port: 80
       service_docker:
