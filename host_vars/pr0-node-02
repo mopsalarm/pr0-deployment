@@ -2,3 +2,6 @@ firewall_allow_ports:
   - 22
   - 53
   - 4242
+
+  - 80
+  - 443
