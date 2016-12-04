@@ -1,6 +1,6 @@
 docker_install: false
 
-postgres_version: 9.5.3
+postgres_version: 9.6.1-alpine
 
 postgres_host: 46.101.134.19
 postgres_url: "postgres://postgres:password@{{ postgres_host }}?sslmode=disable"

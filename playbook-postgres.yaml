@@ -1,6 +1,9 @@
 - hosts: database-hosts
   serial: 1
 
+  vars:
+    postgres_port: 5432
+
   pre_tasks:
     - name: Ensure data directory exists
       file: path=/data/postgres{{ postgres_version }}/ state=directory
@@ -8,7 +11,7 @@
   roles:
     - role: deploy-service
       service_name: postgres
-      service_port: 5432
+      service_port: "{{ postgres_port }}"
       service_docker:
         image: "postgres:{{ postgres_version }}"
 
@@ -18,7 +21,7 @@
           POSTGRES_PASSWORD: password
 
         ports:
-          - "5432:5432"
+          - "{{ postgres_port }}:5432"
 
         volumes:
           - "/data/postgres{{ postgres_version }}:/var/lib/postgresql/data"

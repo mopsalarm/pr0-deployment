@@ -1,8 +1,11 @@
 - hosts: categories-hosts
   serial: 1
   pre_tasks:
+    - name: Create config directory
+      file: name="/data/categories" state="directory"
+
     - name: Create custom resolv.conf
-      copy: content="nameserver {{ custom_dns_server }}" dest="/tmp/resolv.conf"
+      copy: content="nameserver {{ custom_dns_server }}" dest="/data/categories/resolv.conf"
 
   roles:
     - role: deploy-service
@@ -15,7 +18,7 @@
           - "15063:8080"
 
         volumes:
-          - /tmp/resolv.conf:/etc/resolv.conf:ro
+          - /data/categories/resolv.conf:/etc/resolv.conf:ro
 
         command: >
           --datadog {{ datadog_api_key }}
