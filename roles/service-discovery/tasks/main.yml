@@ -5,7 +5,7 @@
 - name: Start consul container
   docker:
     name: consul
-    image: consul:v0.6.4
+    image: consul:0.7.2
     state: reloaded
     restart_policy: unless-stopped
     net: host
@@ -22,7 +22,9 @@
           -bootstrap-expect=1
         {% endif %}
         {% for host in consul_hosts %}
-          -retry-join={{ host }}
+          {% if host != consul_advertise_address %}
+            -retry-join={{ host }}
+          {% endif %}
         {% endfor %}
 
 - name: Remove registrator container
