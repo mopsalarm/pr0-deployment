@@ -5,7 +5,7 @@
 
     - role: docker-install
       tags: docker-install
-      when: "{{ docker_install }}"
+      when: "{{ docker_install|bool }}"
 
     - role: base
       tags: base

@@ -10,7 +10,7 @@ ssl_ciphers "ECDHE-ECDSA-AES128-GCM-SHA256 ECDHE-ECDSA-AES256-GCM-SHA384 ECDHE-E
 ssl_stapling on;
 ssl_stapling_verify on;
 
-{{with $services := "pr0gramm-gif2webm,pr0gramm-thumby,pr0gramm-updates,pr0gramm-feedback,pr0gramm-comments,pr0gramm-categories,pr0gramm-track-settings" | split ","}}
+{{with $services := "pr0gramm-gif2webm,pr0gramm-thumby,pr0gramm-updates,pr0gramm-feedback,pr0gramm-comments,pr0gramm-categories,pr0gramm-track-settings,s0btitle" | split ","}}
   {{range $service := $services}}
     upstream {{$service | replaceAll "-" "_"}} {
       {{range service $service}}

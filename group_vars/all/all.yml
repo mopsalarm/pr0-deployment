@@ -8,12 +8,12 @@ postgres_url: "postgres://postgres:password@{{ postgres_host }}?sslmode=disable"
 consul_hosts:
   - 46.101.134.19
   - 139.59.157.9
-  - 52.57.36.170
+  - 46.101.205.237
 
 firewall_allow_hosts:
   - 46.101.134.19
   - 139.59.157.9
-  - 52.57.36.170
+  - 46.101.205.237
 
 dnsmasq_extra_args: -S /consul/{{ ansible_ssh_host }}#8600
 

@@ -5,6 +5,7 @@
       service_docker:
         image: mopsalarm/go-pr0gramm-analyze
         cpu_shares: 256
+        memory_limit: "{{192*1042*1024}}"
 
         command: >
           --cleanup --parallel 1
