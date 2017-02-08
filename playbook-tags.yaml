@@ -10,6 +10,8 @@
 
         env:
           SERVICE_8080_NAME: pr0gramm-tags
+          SERVICE_8080_CHECK_HTTP: /ping
+          SERVICE_8080_CHECK_INTERVAL: 15s
 
         volumes:
           - "/data/tags/:/checkpoints/"

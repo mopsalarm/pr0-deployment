@@ -17,6 +17,10 @@
         ports:
           - "15063:8080"
 
+        env:
+          SERVICE_8080_CHECK_HTTP: /ping
+          SERVICE_8080_CHECK_INTERVAL: 15s
+
         volumes:
           - /data/categories/resolv.conf:/etc/resolv.conf:ro
 
