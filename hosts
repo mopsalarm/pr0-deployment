@@ -7,9 +7,6 @@ pr0-node-02 ansible_ssh_host=139.59.157.9 ansible_ssh_user=root
 [pr0-node-03]
 pr0-node-03 ansible_ssh_host=46.101.205.237 ansible_ssh_user=root
 
-[hosts:children]
-pr0-node-01
-
 [dnsmasq-hosts:children]
 pr0-node-02
 
@@ -33,6 +30,9 @@ pr0-node-03
 
 [database-hosts:children]
 pr0-node-01
+
+[database-backup-hosts:children]
+pr0-node-03
 
 [tags-hosts:children]
 pr0-node-02

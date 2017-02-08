@@ -26,18 +26,11 @@
         volumes:
           - "/data/postgres{{ postgres_version }}:/var/lib/postgresql/data"
 
-
-    # - name: Start pgweb container
-    #   tags: pgweb
-    #   docker:
-    #     name: postgres-web
-    #     image: donnex/pgweb:latest
-    #     state: reloaded
-    #     pull: always
-    #     restart_policy: unless-stopped
-    #     publish_all_ports: true
-    #
-    #     command: >
-    #       --host=postgres --user=postgres --pass=password
-    #       --auth-user={{ pgweb_user }} --auth-pass={{ pgweb_password }} --ssl=disable
-    #       --bind=0.0.0.0 --listen=8080
+- hosts: database-backup-hosts
+  tasks:
+    - name: Register cronjob for database backup
+      cron:
+        name: postgres-backup
+        hour: 4
+        minute: 0
+        job: docker run --rm -v /backup:/backup postgres:9.6-alpine pg_dump -Fc -f /backup/pr0gramm.dump --dbname postgresql://postgres:password@{{ postgres_host }}/postgres

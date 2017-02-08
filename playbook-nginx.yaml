@@ -1,4 +1,4 @@
-- hosts: hosts
+- hosts: pr0-node-01
   serial: 1
 
   pre_tasks:
