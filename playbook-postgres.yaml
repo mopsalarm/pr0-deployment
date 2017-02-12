@@ -28,9 +28,15 @@
 
 - hosts: database-backup-hosts
   tasks:
+    - name: Ensure backup directory
+      file: name=/backup state=directory
+
+    - name: Copy backup script
+      copy: src=files/pgbackup.sh dest=/backup/pgbackup.sh mode=0755
+
     - name: Register cronjob for database backup
       cron:
         name: postgres-backup
         hour: 4
         minute: 0
-        job: docker run --rm -v /backup:/backup postgres:9.6-alpine pg_dump -Fc -f /backup/pr0gramm.dump --dbname postgresql://postgres:password@{{ postgres_host }}/postgres
+        job: /backup/pgbackup.sh postgresql://postgres:password@{{ postgres_host }}/postgres
