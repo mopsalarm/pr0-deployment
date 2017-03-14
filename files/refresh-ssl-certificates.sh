@@ -17,4 +17,4 @@ for DOMAIN in pr0.wibbly-wobbly.de app.pr0gramm.com ; do
 done
 
 echo "reloading nginx"
-docker exec nginx /etc/init.d/nginx reload
+docker exec nginx nginx -s reload

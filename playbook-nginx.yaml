@@ -56,7 +56,7 @@
 
     - name: Try to reload nginx config in the container
       tags: config
-      command: docker exec nginx nginx -s reload
+      command: docker exec nginx pkill -SIGHUP consul-template
       ignore_errors: true
 
   roles:
