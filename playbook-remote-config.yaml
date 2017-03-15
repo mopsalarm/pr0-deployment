@@ -1,0 +1,18 @@
+
+- hosts: remote-config-hosts
+  tasks:
+  roles:
+    - role: deploy-service
+      service_name: remote-config
+      service_port: 3000
+      service_docker:
+        image: mopsalarm/go-remote-config
+
+        command: >
+          --datadog-apikey "{{ datadog_api_key }}"
+
+        env:
+          SERVICE_3000_NAME: remote-config
+
+        ports:
+          - "3000:3000"
