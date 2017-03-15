@@ -47,3 +47,6 @@ pr0-node-03
 
 [settings-hosts:children]
 pr0-node-02
+
+[remote-config-hosts:children]
+pr0-node-01
