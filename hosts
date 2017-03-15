@@ -22,11 +22,11 @@ pr0-node-01
 
 [feedback-hosts:children]
 pr0-node-01
-pr0-node-03
+pr0-node-02
 
 [comments-hosts:children]
 pr0-node-01
-pr0-node-03
+pr0-node-02
 
 [database-hosts:children]
 pr0-node-01
