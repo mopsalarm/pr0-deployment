@@ -9,6 +9,13 @@
     - name: Create config file if missing
       copy: content="[]" dest=/data/remote-config/config.json force=false
 
+    - name: Create cron-job to create a backup of the config
+      tags: cronjob
+      cron:
+        name: backup_remote_config
+        special_time: daily
+        job: cat /data/remote-config/config.json | gzip -9 > /data/remote-config/config-"$(date -I)".json.gz
+
   roles:
     - role: deploy-service
       service_name: remote-config
