@@ -1,6 +1,12 @@
 
 - hosts: tags-hosts
   serial: 1
+
+  pre_tasks:
+    - name: "Remove previous checkpoint file"
+      file: name="/data/tags/checkpoint.store" state=absent
+      when: tags_clear_checkpoint | default(false) | bool
+
   roles:
     - role: deploy-service
       service_name: pr0gramm-tags
