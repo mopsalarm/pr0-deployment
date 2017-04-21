@@ -6,12 +6,17 @@
       service_name: pr0gramm-comments
       service_port: 15041
       service_docker:
-        image: mopsalarm/pr0gramm-comments:latest
+        image: mopsalarm/go-pr0gramm-comments:latest
+
+        hostname: "{{ inventory_hostname }}"
 
         env:
-          DATADOG_API_KEY: "{{ datadog_api_key }}"
-          DATADOG_APP_KEY: "{{ datadog_app_key }}"
-          POSTGRES_HOST: "{{ postgres_host }}"
+          SERVICE_NAME: "pr0gramm-comments"
 
         ports:
-          - "15041:8080"
+          - "15041:3000"
+
+        command: >
+          --datadog-apikey {{ datadog_api_key }}
+          --postgres {{ postgres_url }}
+          --verbose
