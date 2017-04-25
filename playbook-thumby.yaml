@@ -10,5 +10,4 @@
         image: mopsalarm/pr0gramm-thumby
         ports:
           - "15001:8080"
-        command: >
-          --datadog={{ datadog_api_key }}
+        
