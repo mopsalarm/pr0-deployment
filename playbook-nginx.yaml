@@ -38,7 +38,7 @@
         name: update_app_pr0gramm_com_website
         minute: "*/10"
         job: >
-          dogwrap -k {{ datadog_api_key }} -n "refresh app.pr0gramm.com" --tags cron,gh-pages -m all "git -C /data/nginx/app.pr0gramm.com pull origin gh-pages"
+          dogwrap -k {{ datadog_api_key }} -n "refresh app.pr0gramm.com" --tags cron,gh-pages -m all "cd /data/nginx/app.pr0gramm.com && git pull origin gh-pages"
 
     - name: copy refresh-ssl-certificates script
       copy: src="files/refresh-ssl-certificates.sh" dest="/root/refresh-ssl-certificates.sh" mode=0755
