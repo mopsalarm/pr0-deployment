@@ -7,7 +7,7 @@ docker rm -f letsencrypt || true
 for DOMAIN in pr0.wibbly-wobbly.de app.pr0gramm.com ; do
   docker run --rm --name letsencrypt \
     -v "/data/nginx/static:/webroot" \
-    -v "/etc/letsencrypt:/etc/letsencrypt" \
+    -v "/data/nginx/ssl:/etc/letsencrypt" \
     -v "/var/lib/letsencrypt:/var/lib/letsencrypt" \
     quay.io/letsencrypt/letsencrypt:latest \
       auth -d $DOMAIN \

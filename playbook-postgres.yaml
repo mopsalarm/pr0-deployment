@@ -37,6 +37,6 @@
     - name: Register cronjob for database backup
       cron:
         name: postgres-backup
-        hour: 4
+        hour: 3
         minute: 0
         job: /backup/pgbackup.sh postgresql://postgres:password@{{ postgres_host }}/postgres
