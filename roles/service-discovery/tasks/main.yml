@@ -43,4 +43,4 @@
     volumes:
       - "/var/run/docker.sock:/tmp/docker.sock"
     command: >
-      --cleanup --ip={{ ansible_ssh_host }} consul://{{ consul_advertise_address }}:8500
+      --cleanup --ip={{ consul_advertise_address }} consul://{{ consul_advertise_address }}:8500

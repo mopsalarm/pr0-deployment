@@ -1,5 +1,5 @@
 
-- hosts: thumby-hosts
+- hosts: pr0-node-02, pr0-node-03
   serial: 1
 
   roles:
@@ -10,4 +10,6 @@
         image: mopsalarm/pr0gramm-thumby
         ports:
           - "15001:8080"
-        
+
+        command: >
+          --concurrent=4

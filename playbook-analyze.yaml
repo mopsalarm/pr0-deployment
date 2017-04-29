@@ -1,4 +1,4 @@
-- hosts: analyze-hosts
+- hosts: pr0-node-03
   roles:
     - role: deploy-service
       service_name: pr0gramm-analyze

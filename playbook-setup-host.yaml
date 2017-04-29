@@ -3,21 +3,11 @@
     - role: swap
       tags: swap
 
-    - role: docker-install
-      tags: docker-install
-      when: "{{ docker_install|bool }}"
-
     - role: base
       tags: base
-
-    - role: firewall
-      tags: firewall
 
     - role: service-discovery
       tags: service-discovery
 
     - role: datadog
       tags: datadog
-
-    - role: logrotate
-      tags: logrotate

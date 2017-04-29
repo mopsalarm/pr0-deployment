@@ -1,5 +1,5 @@
 
-- hosts: remote-config-hosts
+- hosts: pr0-node-01
   tasks:
 
   pre_tasks:

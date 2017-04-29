@@ -1,11 +1,11 @@
-- hosts: categories-hosts
+- hosts: pr0-node-01, pr0-node-02
   serial: 1
   pre_tasks:
     - name: Create config directory
       file: name="/data/categories" state="directory"
 
     - name: Create custom resolv.conf
-      copy: content="nameserver {{ custom_dns_server }}" dest="/data/categories/resolv.conf"
+      copy: content="nameserver {{ dns_server }}" dest="/data/categories/resolv.conf"
 
   roles:
     - role: deploy-service

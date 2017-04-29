@@ -1,6 +1,6 @@
-- hosts: gif2webm-hosts
+- hosts: pr0-node-02, pr0-node-03
   serial: 1
-  
+
   roles:
     - role: deploy-service
       service_name: pr0gramm-gif2webm

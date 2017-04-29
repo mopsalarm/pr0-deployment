@@ -1,5 +1,4 @@
-
-- hosts: feedback-hosts
+- hosts: pr0-node-01, pr0-node-02
   serial: 1
 
   roles:

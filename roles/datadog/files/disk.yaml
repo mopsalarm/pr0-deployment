@@ -1,0 +1,5 @@
+init_config:
+
+instances:
+  - use_mounts: no
+    excluded_mountpoint_re: /(run|var|sys)/.*

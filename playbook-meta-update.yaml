@@ -1,5 +1,4 @@
-
-- hosts: database-hosts
+- hosts: pr0-node-01
   roles:
     - role: deploy-service
       service_name: pr0gramm-meta-update

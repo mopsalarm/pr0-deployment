@@ -1,4 +1,4 @@
-- hosts: update-manager-hosts
+- hosts: pr0-node-02
   serial: 1
   roles:
     - role: deploy-service

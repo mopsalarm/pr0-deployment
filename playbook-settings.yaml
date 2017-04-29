@@ -1,5 +1,5 @@
 
-- hosts: settings-hosts
+- hosts: pr0-node-03
   tasks:
   roles:
     - role: deploy-service

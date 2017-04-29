@@ -1,0 +1,5 @@
+{
+  "iptables": true,
+  "userland-proxy": false,
+  "log-driver": "journald"
+}

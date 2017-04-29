@@ -84,4 +84,4 @@
           - "/data/nginx/conf.d/pr0gramm.server.conf:/etc/nginx/conf.d/pr0gramm.server.conf:ro"
           - "/data/nginx/conf.d/htpasswd:/etc/nginx/conf.d/htpasswd:ro"
           - "/data/nginx/conf.d/app.conf.ctmpl:/etc/consul-templates/app.conf.ctmpl:ro"
-          - "/etc/letsencrypt/:/ssl/:ro"
+          - "/data/nginx/ssl/:/ssl/:ro"

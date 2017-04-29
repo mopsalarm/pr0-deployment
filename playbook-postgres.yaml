@@ -1,4 +1,4 @@
-- hosts: database-hosts
+- hosts: service-postgres
   serial: 1
 
   vars:
@@ -26,7 +26,7 @@
         volumes:
           - "/data/postgres{{ postgres_version }}:/var/lib/postgresql/data"
 
-- hosts: database-backup-hosts
+- hosts: service-postgres-backup
   tasks:
     - name: Ensure backup directory
       file: name=/backup state=directory

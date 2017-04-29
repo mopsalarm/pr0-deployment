@@ -1,5 +1,0 @@
-firewall_reset: false
-
-firewall_allow_hosts: []
-firewall_allow_ports:
-  - 22

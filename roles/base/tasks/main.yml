@@ -1,38 +1,47 @@
-- name: add hushlogin
+- name: Add hushlogin
   file: path=/root/.hushlogin state=touch
 
-- name: update apt cache
-  apt: update_cache=yes cache_valid_time=3600
+- name: Install epel release repository
+  package: name=epel-release state=present
 
-- name: install htop
-  apt: name=htop state=present
+- name: Install packages
+  package: name={{ item }} state=present
+  with_items:
+    - htop
+    - screen
+    - git
+    - python2-pip
+    - NetworkManager-glib
 
-- name: install screen
-  apt: name=screen state=present
-
-- name: install git
-  apt: name=git state=present
-
-- name: install python-setuptools
-  apt: name=python-setuptools state=present
-
-- name: install pip
-  command: easy_install -U pip
-
-- name: install docker-py via pip
+- name: Install docker-py via pip
   pip: name=docker-py version=1.9.0
 
-- name: install httpie via pip
+- name: Install httpie via pip
   pip: name=httpie state=latest
 
-- name: fix local network interface
-  shell: "ip addr add 127.0.0.1/8 dev lo && ip link set lo up"
-  ignore_errors: true
+- name: Install ffind via pip
+  pip: name=ffind state=latest
 
-- name: configure docker
-  tags: configure-docker
+- name: Disable firewalld
   notify: restart docker
-  lineinfile:
-    dest: /etc/default/docker
-    regexp: DOCKER_OPTS
-    line: DOCKER_OPTS="--iptables=true --userland-proxy=false"
+  service: name=firewalld state=stopped enabled=false
+
+- name: Configure docker
+  notify: restart docker
+  copy: src=docker-config.json dest=/etc/docker/daemon.json
+
+- name: Enable network manager
+  service: name=NetworkManager state=started enabled=true
+
+- name: Configure internal network
+  tags: private-network
+  nmcli:
+    conn_name: private-net
+    type: ethernet
+    ifname: eth1
+    ip4: "{{ net_private_ip }}/24"
+    state: present
+    mtu: 1450
+
+- name: (re-)activate network
+  command: nmcli c up private-net

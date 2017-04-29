@@ -1,20 +1,14 @@
 docker_install: false
 
-postgres_version: 9.6.1-alpine
+postgres_version: 9.6.2-alpine
 
-postgres_host: 46.101.134.19
+postgres_host: "{{ hostvars[groups['service-postgres'][0]].net_private_ip }}"
 postgres_url: "postgres://postgres:password@{{ postgres_host }}?sslmode=disable"
 
-consul_hosts:
-  - 46.101.134.19
-  - 139.59.157.9
-  - 46.101.205.237
+consul_hosts: "{{ groups['service-consul']|map('extract', hostvars, 'net_private_ip')|list }}"
 
-firewall_allow_hosts:
-  - 46.101.134.19
-  - 139.59.157.9
-  - 46.101.205.237
+dnsmasq_extra_args: -S /consul/{{ net_private_ip }}#8600
 
-dnsmasq_extra_args: -S /consul/{{ ansible_ssh_host }}#8600
+dns_server: "{{ hostvars[groups['service-dnsmasq'][0]].net_private_ip }}"
 
-custom_dns_server: 139.59.157.9
+consul_advertise_address: "{{ net_private_ip }}"

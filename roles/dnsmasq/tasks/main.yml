@@ -16,9 +16,10 @@
 
 - name: Start dnsmasq container
   command: >
-    docker run -d --restart unless-stopped --name dnsmasq
+    docker run -d --name=dnsmasq --restart=unless-stopped
+      --net=host
       --cap-add=NET_ADMIN
-      -p 53:53/udp -p 53:53/tcp
+      -e SERVICE_53_NAME=dnsmasq
       -v {{ dnsmasq_hosts_directory }}/:/etc/hosts.d/:ro
       {{ dnsmasq_image }}
       --hostsdir=/etc/hosts.d/ {{ dnsmasq_extra_args }}
