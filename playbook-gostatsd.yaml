@@ -8,7 +8,7 @@
       service_name: statsd
       service_port: 8126
       service_docker:
-        image: atlassianlabs/gostatsd:2.0.1
+        image: atlassianlabs/gostatsd:2.1.0
 
         net: host
 
@@ -31,5 +31,5 @@
 
         command: >
           --source :8125
-          --target {{ ansible_ssh_host }}:8126
+          --target {{ net_private_ip }}:8126
           --quiet
