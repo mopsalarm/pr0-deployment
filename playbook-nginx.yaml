@@ -3,11 +3,9 @@
 
   pre_tasks:
     - name: Ensures nginx config directory exists
-      tags: config
       file: path=/data/nginx/conf.d state=directory
 
     - name: Ensures nginx data directory exists
-      tags: config
       file: path={{ item }} state=directory
       with_items:
         - /data/nginx/data
@@ -15,7 +13,6 @@
         - /data/nginx/static
 
     - name: copy config files
-      tags: config
       copy: src="files/{{ item }}" dest="/data/nginx/conf.d/{{ item }}"
       with_items:
         - nginx.conf
@@ -23,7 +20,6 @@
         - pr0gramm.server.conf
 
     - name: Copy htpasswd file
-      tags: config
       copy: dest="/data/nginx/conf.d/htpasswd" content="{{ update_manager_htpasswd }}"
 
     - name: update website git repo
@@ -53,11 +49,6 @@
         day: "*/5"
         job: >
           dogwrap -k {{ datadog_api_key }} -n "refresh certificates" --tags cron,letsencrypt -m all "/root/refresh-ssl-certificates.sh"
-
-    - name: Try to reload nginx config in the container
-      tags: config
-      command: docker exec nginx pkill -SIGHUP consul-template
-      ignore_errors: true
 
   roles:
     - role: deploy-service
