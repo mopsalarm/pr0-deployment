@@ -1,7 +1,9 @@
 - hosts: pr0-node-02
   pre_tasks:
     - name: copy statsd config file
-      template: src=templates/statsd.yaml dest=/data/statsd.yaml
+      copy:
+        content: 'datadog: { api_key: "{{ datadog_api_key }}" }'
+        dest: /data/statsd.yaml
 
   roles:
     - role: deploy-service

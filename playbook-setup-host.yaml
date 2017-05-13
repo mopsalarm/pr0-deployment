@@ -11,3 +11,6 @@
 
     - role: datadog
       tags: datadog
+
+    - role: logrotate
+      tags: logrotate
