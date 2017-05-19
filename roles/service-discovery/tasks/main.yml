@@ -5,12 +5,14 @@
 - name: Start consul container
   docker:
     name: consul
-    image: consul:0.8.1
+    image: consul:0.8.3
     state: reloaded
     restart_policy: unless-stopped
     net: host
     env:
       CONSUL_LOCAL_CONFIG: "{{ consul_config|to_json }}"
+    volumes:
+      - /data/consul:/consul/data
     command: >
       agent -ui -server
         --bind=0.0.0.0
@@ -18,12 +20,11 @@
         --advertise={{ consul_advertise_address }}
         --encrypt={{ consul_secret }}
         --node={{ inventory_hostname }}
-        {% if consul_bootstrap %}
-          -bootstrap-expect=1
-        {% endif %}
+        --data-dir=/consul/data
+        --bootstrap-expect={{ consul_hosts|length }}
         {% for host in consul_hosts %}
           {% if host != consul_advertise_address %}
-            -retry-join={{ host }}
+            --retry-join={{ host }}
           {% endif %}
         {% endfor %}
 

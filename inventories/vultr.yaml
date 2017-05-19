@@ -3,7 +3,6 @@ all:
     pr0-node-01:
       ansible_host: 45.76.85.111
       net_private_ip: 10.99.0.11
-      consul_bootstrap: true
 
     pr0-node-02:
       ansible_host: 45.76.86.106
@@ -19,7 +18,7 @@ all:
 
 service-consul:
   children:
-    ungrouped:
+    all:
 
 service-dnsmasq:
   hosts:

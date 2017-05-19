@@ -6,9 +6,6 @@
     - role: base
       tags: base
 
-    - role: service-discovery
-      tags: service-discovery
-
     - role: datadog
       tags: datadog
 
@@ -17,3 +14,10 @@
 
     - role: journald
       tags: journald
+
+- hosts: all
+  gather_facts: false
+  serial: 1
+  roles:
+    - role: service-discovery
+      tags: service-discovery
