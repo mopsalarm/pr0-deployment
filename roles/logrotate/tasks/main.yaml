@@ -1,17 +1,8 @@
-- name: create config directory
-  file: name="/data" state="directory"
+- name: Install logrotate
+  package: name=logrotate state=present
 
-- name: copy logrotate config file
-  copy: src=logrotate.conf dest="/data/logrotate.conf"
-
-- name: start new docker container
-  docker:
-    name: logrotate
-    image: eranchetz/logrotate
-    state: reloaded
-    restart_policy: unless-stopped
-
-    volumes:
-      - "/var/lib/docker/containers:/var/lib/docker/containers:rw"
-      - "/data/nginx/logs:/data/nginx/logs:rw"
-      - "/data/logrotate.conf:/etc/logrotate.conf:ro"
+- name: Copy logrotate config files
+  copy: src={{ item }}.conf dest="/etc/logrotate.d/{{ item }}"
+  with_items:
+    - nginx
+    - syslog

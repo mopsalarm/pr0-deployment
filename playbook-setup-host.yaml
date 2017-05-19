@@ -14,3 +14,6 @@
 
     - role: logrotate
       tags: logrotate
+
+    - role: journald
+      tags: journald

@@ -1,0 +1,11 @@
+- name: Configure journald to not forward to syslog
+  lineinfile:
+    name: /etc/systemd/journald.conf
+    regexp: ^#?ForwardToSyslog=
+    line: ForwardToSyslog=no
+
+- name: Restarting journald
+  service: name=systemd-journald state=restarted
+
+- name: Remove rsyslog
+  package: name=rsyslog state=absent
