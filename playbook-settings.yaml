@@ -1,6 +1,4 @@
-
 - hosts: pr0-node-03
-  tasks:
   roles:
     - role: deploy-service
       service_name: pr0gramm-track-settings
@@ -16,3 +14,10 @@
 
         ports:
           - "9645:8080"
+
+  tasks:
+    - name: Cleanup old tracking data
+      cron:
+        name: cleanup_tracking_data
+        job: find /data/track-settings/ -ctime +30 -delete
+        special_time: daily
