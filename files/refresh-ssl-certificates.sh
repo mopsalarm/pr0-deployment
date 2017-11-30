@@ -1,7 +1,7 @@
 #!/bin/sh
 set -e
 
-docker pull quay.io/letsencrypt/letsencrypt:latest
+docker pull certbot/certbot:v0.19.0
 docker rm -f letsencrypt || true
 
 for DOMAIN in pr0.wibbly-wobbly.de app.pr0gramm.com ; do
@@ -9,7 +9,7 @@ for DOMAIN in pr0.wibbly-wobbly.de app.pr0gramm.com ; do
     -v "/data/nginx/static:/webroot" \
     -v "/data/nginx/ssl:/etc/letsencrypt" \
     -v "/var/lib/letsencrypt:/var/lib/letsencrypt" \
-    quay.io/letsencrypt/letsencrypt:latest \
+    certbot/certbot:v0.19.0 \
       auth -d $DOMAIN \
       --webroot --webroot-path /webroot \
       -m mopsalarm.pr0gramm@gmx.de \
