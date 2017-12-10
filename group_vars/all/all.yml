@@ -1,6 +1,6 @@
 docker_install: false
 
-postgres_version: 9.6.2-alpine
+postgres_version: 10.1-alpine
 
 postgres_host: "{{ hostvars[groups['service-postgres'][0]].net_private_ip }}"
 postgres_url: "postgres://postgres:password@{{ postgres_host }}?sslmode=disable"

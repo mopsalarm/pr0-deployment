@@ -5,7 +5,7 @@
 - name: Start consul container
   docker:
     name: consul
-    image: consul:0.8.3
+    image: consul:1.0.1
     state: reloaded
     restart_policy: unless-stopped
     net: host
