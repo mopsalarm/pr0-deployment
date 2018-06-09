@@ -1,0 +1,20 @@
+- hosts: pr0-node-01, pr0-node-02
+  serial: 1
+  roles:
+    - role: deploy-service
+      service_name: pr0gramm-kv
+      service_port: 15088
+      service_docker:
+        image: mopsalarm/kv
+
+        ports:
+          - "15088:3080"
+
+        env:
+          SERVICE_3080_NAME: pr0gramm-kv
+          SERVICE_3080_CHECK_HTTP: /admin/ping
+          SERVICE_3080_CHECK_INTERVAL: 15s
+
+        command: >
+          --datadog-apikey {{ datadog_api_key }}
+          --postgres {{ postgres_url }}
