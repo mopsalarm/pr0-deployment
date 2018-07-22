@@ -8,30 +8,32 @@
   roles:
     - role: deploy-service
       service_name: statsd
-      service_port: 8126
+
+      # service_port: 8125
+
       service_docker:
-        image: atlassianlabs/gostatsd:2.1.0
+        image: atlassianlabs/gostatsd:7.1.0
 
         net: host
 
         command: >
           --backends datadog
           --config-path /statsd.yaml
-          --percent-threshold 90,95,99
-          --flush-interval 60s
-          --metrics-addr :8126
+          --flush-interval 1s
+          --metrics-addr :8125
+          --ignore-host
 
         volumes:
           - "/data/statsd.yaml:/statsd.yaml:ro"
 
-    - role: deploy-service
-      service_name: statsd-proxy
-      service_docker:
-        image: mopsalarm/udp-proxy
-
-        net: host
-
-        command: >
-          --source :8125
-          --target {{ net_private_ip }}:8126
-          --quiet
+    # - role: deploy-service
+    #   service_name: statsd-proxy
+    #   service_docker:
+    #     image: mopsalarm/udp-proxy
+    #
+    #     net: host
+    #
+    #     command: >
+    #       --source :8125
+    #       --target {{ net_private_ip }}:8126
+    #       --quiet
