@@ -12,7 +12,7 @@
       # service_port: 8125
 
       service_docker:
-        image: atlassianlabs/gostatsd:7.1.0
+        image: atlassianlabs/gostatsd:9.1.0
 
         net: host
 
