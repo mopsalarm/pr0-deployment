@@ -2,7 +2,14 @@
   pre_tasks:
     - name: copy statsd config file
       copy:
-        content: 'datadog: { api_key: "{{ datadog_api_key }}" }'
+        content: |
+          datadog:
+            api_key: "{{ datadog_api_key }}"
+
+          disabled-sub-metrics:
+            sum-squares: true
+            sum-squares-pct: true
+
         dest: /data/statsd.yaml
 
   roles:
@@ -22,6 +29,7 @@
           --flush-interval 1s
           --metrics-addr :8125
           --ignore-host
+          --percent-threshold "5 75 90 95 99"
 
         volumes:
           - "/data/statsd.yaml:/statsd.yaml:ro"
